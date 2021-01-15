@@ -31,7 +31,7 @@ jobs:
           root: ~/build
           paths:
             - linux-stable
-    build:
+    compile:
         docker:
             - image: kernelci/build-gcc-8_x86:latest
         working_directory: ~/build
@@ -51,6 +51,6 @@ workflows:
   build-and-deploy:
     jobs:
         - checkout
-        - build:
+        - compile:
             requires:
                 - checkout
