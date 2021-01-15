@@ -1,49 +1,37 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+orbs:
+  cloudsmith: cloudsmith/cloudsmith@1.0.1
 jobs:
   checkout:
-    machine:
-      image: ubuntu-1604:202007-01
+    docker:
+      - image: kernelci/build-gcc-8_x86:latest
     working_directory: ~/build
     steps:
       - checkout
       - restore_cache:
          keys:
-           - build-machine-{{ checksum "Makefile" }}
+           - build-{{ checksum ".circleci/config.yml" }}
       - run:
           name: 'Prepare build environment...'
           command: |
-            if [ -d "linux-stable" ]; then
+            if [ -d "~/build/linux-stable" ]; then
               echo 'Build environment was cached.'
             else
               echo 'Build environment was not cached.'
-              sudo apt-get update -qq
-              sudo apt-get install -y apt-utils
-              sudo apt-get install -y sudo
-              sudo apt-get install -y uncrustify rsync build-essential
-              sudo apt-get install -y ruby python autoconf automake libtool
-              sudo apt-get install -y libncurses5-dev libncursesw5-dev bc
-              sudo apt-get install -y libssl-dev pkg-config zsh libelf-dev
-              sudo apt-get install -y bison flex sqlite3 libsqlite3-dev
-              sudo apt-get install -y liblz4-tool liblz4-dev
-              git config --global user.email $GH_EMAIL
-              git config --global user.name $GH_NAME
+              apt-get update -qq --allow-releaseinfo-change
+              apt-get install patch
+              apt-get install --reinstall make
               make prepare
-              make save_space
             fi
-            ls
       - save_cache:
-          key: build-machine-{{ checksum "Makefile" }}
+          key: build-again-{{ checksum ".circleci/config.yml" }}
           paths:
-            - linux-stable
-            - pristine
-            - patches
+            - build
       - persist_to_workspace:
-          root: .
+          root: ~/build
           paths:
             - linux-stable
-            - pristine
-            - patches
 workflows:
   version: 2
   build-and-deploy:
