@@ -18,11 +18,9 @@ copy_change:
 	cp -r ./kernel ~/build/linux-stable
 
 config: copy_change
-	cp -f /boot/config-$(shell uname -r) .config
 	cd ~/build/linux-stable && ./scripts/kconfig/streamline_config.pl > config_strip
-	cd ~/build/linux-stable &&  mv .config config_sav
-	cd ~/build/linux-stable &&  mv config_strip .config
-	cd ~/build/linux-stable && $(MAKE) menuconfig CC=clang HOSTCC=clang
+	cd ~/build/linux-stable &&  cp -f config_strip .config
+	cd ~/build/linux-stable && $(MAKE) menuconfig
 	cd ~/build/linux-stable && sed -i -e "s/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor\"/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor,bpf\"/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cp -f ~/build/linux-stable/.config .config
