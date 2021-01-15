@@ -8,7 +8,7 @@ prepare:
 	cd ~/build/linux-stable && $(MAKE) mrproper
 	cd ~/build && mkdir -p pristine
 	cd ~/build && cp -r ./linux-stable ./pristine
-	cd ~/build/linux-stable && sed -i -e "s/EXTRAVERSION =/EXTRAVERSION = provbpf$(lsm-version)/g" Makefile
+	cd ~/build/linux-stable && sed -i -e "s/EXTRAVERSION =/EXTRAVERSION = provbpf$(provbpf-version)/g" Makefile
 
 delete:
 	cd ~/build && rm -rf ./pristine
