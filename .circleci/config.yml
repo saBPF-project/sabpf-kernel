@@ -31,21 +31,21 @@ jobs:
           root: ~/build
           paths:
             - linux-stable
-  build:
-    docker:
-      - image: kernelci/build-gcc-8_x86:latest
-    working_directory: ~/build
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/build
-      - run: 'apt-get update -qq --allow-releaseinfo-change'
-      - run: 'apt-get install -y sudo rpm cpio'
-      - run: 'apt-get install -y build-essential rsync libtool libncurses5-dev'
-      - run: 'apt-get install -y libncursesw5-dev bc pkg-config zsh libelf-dev'
-      - run: 'apt-get install -y bison flex'
-      - run: 'make config_circle'
-      - run: 'make build'
+    build:
+        docker:
+            - image: kernelci/build-gcc-8_x86:latest
+        working_directory: ~/build
+        steps:
+            - checkout
+            - attach_workspace:
+              at: ~/build
+            - run: 'apt-get update -qq --allow-releaseinfo-change'
+            - run: 'apt-get install -y sudo rpm cpio'
+            - run: 'apt-get install -y build-essential rsync libtool libncurses5-dev'
+            - run: 'apt-get install -y libncursesw5-dev bc pkg-config zsh libelf-dev'
+            - run: 'apt-get install -y bison flex'
+            - run: 'make config_circle'
+            - run: 'make build'
 workflows:
   version: 2
   build-and-deploy:
