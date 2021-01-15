@@ -10,7 +10,7 @@ prepare:
 	cd ~/build && cp -r ./linux-stable ./pristine
 	cd ~/build/linux-stable && sed -i -e "s/EXTRAVERSION =/EXTRAVERSION = provbpf$(lsm-version)/g" Makefile
 
-delete_kernel:
+delete:
 	cd ~/build && rm -rf ./pristine
 	cd ~/build && rm -rf ./linux-stable
 
@@ -49,3 +49,7 @@ install: install_header install_kernel
 clean:
 	cd ~/build/linux-stable && $(MAKE) clean
 	cd ~/build/linux-stable && $(MAKE) mrproper
+
+save_space:
+	cd ~/build/linux-stable && rm -rf .git
+	cd ~/build/pristine/linux-stable && rm -rf .git
