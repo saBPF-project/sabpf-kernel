@@ -1,4 +1,4 @@
-kernel-version=5.10.7
+kernel-version=5.11
 provbpf-version=0.1.0
 arch=x86_64
 
@@ -16,6 +16,7 @@ delete:
 
 copy_change:
 	cp -r ./kernel ~/build/linux-stable
+	cp -r ./include ~/build/linux-stable
 
 config: copy_change
 	cd ~/build/linux-stable && ./scripts/kconfig/streamline_config.pl > config_strip
@@ -30,6 +31,10 @@ config_circle: copy_change
 	cd ~/build/linux-stable && sed -i -e "s/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor\"/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor,bpf\"/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cp -f ~/build/linux-stable/.config .config
+
+#TODO: FIX (NOT WORKING)
+compile_bpf:
+	cd ~/build/linux-stable && $(MAKE) kernel/bpf W=1
 
 build: copy_change
 	cd ~/build/linux-stable && $(MAKE) -j16 ARCH=${arch}
