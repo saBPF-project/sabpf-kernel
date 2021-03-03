@@ -4,7 +4,7 @@ arch=x86_64
 
 prepare:
 	mkdir -p ~/build
-	cd ~/build && git clone -b v$(kernel-version) --single-branch git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+	cd ~/build && git clone -b v$(kernel-version) --single-branch --depth 1 git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 	cd ~/build/linux-stable && $(MAKE) mrproper
 	cd ~/build && mkdir -p pristine
 	cd ~/build && cp -r ./linux-stable ./pristine
