@@ -32,10 +32,10 @@ config_circle: copy_change
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cp -f ~/build/linux-stable/.config .config
 
-build_core: copy_change
+build_kernel: copy_change
 	cd ~/build/linux-stable && $(MAKE) kernel W=1
 
-build: build_core
+build: build_kernel
 	cd ~/build/linux-stable && $(MAKE) -j16 ARCH=${arch}
 
 install_header:
