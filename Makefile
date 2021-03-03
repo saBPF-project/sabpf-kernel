@@ -64,3 +64,21 @@ update_version: delete prepare
 	cp ~/build/pristine/linux-stable/include/uapi/linux/bpf.h include/uapi/linux/bpf.h
 	mv kernel/bpf/bpf_lsm.c kernel/bpf/_bpf_lsm.c
 	cp ~/build/pristine/linux-stable/kernel/bpf/bpf_lsm.c kernel/bpf/bpf_lsm.c
+
+patch: copy_change
+	mkdir -p patches
+	cd ~/build/pristine/linux-stable && rm -f .config
+	cd ~/build/pristine/linux-stable && rm -f config_sav
+	cd ~/build/pristine/linux-stable && rm -f certs/signing_key.pem
+	cd ~/build/pristine/linux-stable && rm -f	certs/x509.genkey
+	cd ~/build/pristine/linux-stable && rm -f certs/signing_key.x509
+	cd ~/build/pristine/linux-stable && rm -f tools/objtool/arch/x86/insn/inat-tables.c
+	cd ~/build/pristine/linux-stable && $(MAKE) clean
+	cd ~/build/pristine/linux-stable && $(MAKE) mrproper
+	cp -r kernel ~/build/pristine/linux-stable/.
+	cp -r include ~/build/pristine/linux-stable/.
+	cd ~/build/pristine/linux-stable && git status
+	cd ~/build/pristine/linux-stable && git add .
+	cd ~/build/pristine/linux-stable && git commit -a -m 'provbpf'
+	cd ~/build/pristine/linux-stable && git format-patch HEAD~ -s
+	cp -f ~/build/pristine/linux-stable/*.patch patches/
