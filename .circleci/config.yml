@@ -61,7 +61,6 @@ jobs:
         - run: 'apt-get install -y bison flex'
         - run: 'git config --global user.name "Soo Yee Lim"'
         - run: 'git config --global user.email "sooyee.lim@bristol.ac.uk"'
-        - run: 'make prepare'
         - run: 'make patch'
         - persist_to_workspace:
             root: ~/build
