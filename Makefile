@@ -19,6 +19,7 @@ copy_change:
 	cp -r ./include ~/build/linux-stable
 
 config: copy_change
+	cp -f /boot/config-$(shell uname -r) ~/build/linux-stable/.config
 	cd ~/build/linux-stable && ./scripts/kconfig/streamline_config.pl > config_strip
 	cd ~/build/linux-stable &&  cp -f config_strip .config
 	cd ~/build/linux-stable && $(MAKE) menuconfig
