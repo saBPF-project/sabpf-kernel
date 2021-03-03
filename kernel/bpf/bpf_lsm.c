@@ -99,6 +99,21 @@ const static struct bpf_func_proto bpf_ima_inode_hash_proto = {
 	.allowed	= bpf_ima_inode_hash_allowed,
 };
 
+/* systopia contrib start */
+BPF_CALL_1(bpf_inode_from_sock, struct socket *, socket)
+{
+	return (long) SOCK_INODE(socket);
+//	return (struct inode *) &container_of(socket, struct socket_alloc, socket)->vfs_inode;
+}
+
+const struct bpf_func_proto bpf_inode_from_sock_proto = {
+	.func		= bpf_inode_from_sock,
+	.gpl_only	= false,
+	.ret_type	= RET_INTEGER, // Like bpf_get_current_task, the pointer is returned as u64 int
+	.arg1_type	= ARG_PTR_TO_MEM,
+};
+/* systopia contrib end */
+
 static const struct bpf_func_proto *
 bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 {
@@ -123,8 +138,10 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 		return &bpf_bprm_opts_set_proto;
 	case BPF_FUNC_ima_inode_hash:
 		return prog->aux->sleepable ? &bpf_ima_inode_hash_proto : NULL;
-	case BPF_FUNC_sock_inode:
-		return &bpf_sock_inode_proto;
+	/* systopia contrib start */
+	case BPF_FUNC_inode_from_sock:
+		return &bpf_inode_from_sock_proto;
+	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);
 	}

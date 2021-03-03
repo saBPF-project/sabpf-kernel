@@ -1,4 +1,4 @@
-kernel-version=5.11
+kernel-version=5.11.2
 provbpf-version=0.1.0
 arch=x86_64
 
@@ -55,3 +55,11 @@ clean:
 save_space:
 	cd ~/build/linux-stable && rm -rf .git
 	cd ~/build/pristine/linux-stable && rm -rf .git
+
+update_version: delete prepare
+	mv include/linux/bpf.h include/linux/_bpf.h
+	cp ~/build/pristine/linux-stable/include/linux/bpf.h include/linux/bpf.h
+	mv include/uapi/linux/bpf.h include/uapi/linux/_bpf.h
+	cp ~/build/pristine/linux-stable/include/uapi/linux/bpf.h include/uapi/linux/bpf.h
+	mv kernel/bpf/bpf_lsm.c kernel/bpf/_bpf_lsm.c
+	cp ~/build/pristine/linux-stable/kernel/bpf/bpf_lsm.c kernel/bpf/bpf_lsm.c

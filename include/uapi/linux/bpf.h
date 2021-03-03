@@ -3995,7 +3995,9 @@ union bpf_attr {
 	FN(ktime_get_coarse_ns),	\
 	FN(ima_inode_hash),		\
 	FN(sock_from_file),		\
-	FN(sock_inode),                  \
+	/* systopia contrib start */\
+	FN(inode_from_sock),		\
+	/* systopia contrib end */\
 	/* */
 
 /* integer value in 'imm' field of BPF_CALL instruction selects which helper
