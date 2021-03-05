@@ -43,10 +43,16 @@ build_kernel:
 build_libbpf:
 	cd ~/build/linux-stable && $(MAKE) -C tools/lib/bpf all
 
+build_resolve_btfids:
+	cd ~/build/linux-stable && sudo $(MAKE) -C tools/bpf/resolve_btfids all
+
 build_bpftool:
 	cd ~/build/linux-stable && sudo $(MAKE) -C tools/bpf/bpftool all
 
-build_bpf: build_libbpf build_bpftool
+build_runqslower:
+	cd ~/build/linux-stable && sudo $(MAKE) -C tools/bpf/runqslower all
+
+build_bpf: build_libbpf build_bpftool build_runqslower
 
 build: build_kernel_sub build_kernel build_bpf
 
@@ -64,7 +70,10 @@ install_libbpf:
 install_bpftool:
 	cd ~/build/linux-stable && sudo $(MAKE) tools/bpf/bpftool install
 
-install_bpf: install_libbpf install_bpftool
+install_runqslower:
+	cd ~/build/linux-stable && sudo $(MAKE) tools/bpf/runqslower install
+
+install_bpf: install_libbpf install_bpftool install_runqslower
 
 install: install_header install_kernel install_bpf
 
