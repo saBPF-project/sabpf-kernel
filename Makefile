@@ -41,13 +41,14 @@ build_kernel:
 	cd ~/build/linux-stable && $(MAKE) -j16 ARCH=${arch}
 
 build_libbpf:
-	cd ~/build/linux-stable/tools/lib/bpf && $(MAKE) all
+	cd ~/build/linux-stable && $(MAKE) -C tools/lib/bpf all
 
-build_bpf_tools:
-	cd ~/build/linux-stable/tools/bpf && $(MAKE) resolve_btfids
-	cd ~/build/linux-stable/tools/bpf && $(MAKE) all
+build_bpftool:
+	cd ~/build/linux-stable && sudo $(MAKE) -C tools/bpf/bpftool all
 
-build: build_kernel_sub build_kernel
+build_bpf: build_libbpf build_bpftool
+
+build: build_kernel_sub build_kernel build_bpf
 
 install_header:
 	cd ~/build/linux-stable && sudo $(MAKE) headers_install ARCH=${arch} INSTALL_HDR_PATH=/usr
@@ -58,12 +59,14 @@ install_kernel:
 	cd ~/build/linux-stable && sudo cp -f .config /boot/config-$(kernel-version)provbpf$(provbpf-version)+
 
 install_libbpf:
-	cd ~/build/linux-stable/tools/lib/bpf && sudo $(MAKE) install
+	cd ~/build/linux-stable && sudo $(MAKE) -C tools/lib/bpf install
 
-install_bpf_tools:
-	cd ~/build/linux-stable/tools/bpf && sudo $(MAKE) install
+install_bpftool:
+	cd ~/build/linux-stable && sudo $(MAKE) tools/bpf/bpftool install
 
-install: install_header install_kernel
+install_bpf: install_libbpf install_bpftool
+
+install: install_header install_kernel install_bpf
 
 clean:
 	cd ~/build/linux-stable && $(MAKE) clean
