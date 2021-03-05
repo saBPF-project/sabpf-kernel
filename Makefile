@@ -40,7 +40,11 @@ build_kernel_sub: copy_change
 build_kernel:
 	cd ~/build/linux-stable && $(MAKE) -j16 ARCH=${arch}
 
-build_bpf:
+build_libbpf:
+	cd ~/build/linux-stable/tools/lib/bpf && $(MAKE) all
+
+build_bpf_tools:
+	cd ~/build/linux-stable/tools/bpf && $(MAKE) resolve_btfids
 	cd ~/build/linux-stable/tools/bpf && $(MAKE) all
 
 build: build_kernel_sub build_kernel
@@ -53,8 +57,11 @@ install_kernel:
 	cd ~/build/linux-stable && sudo $(MAKE) install ARCH=${arch}
 	cd ~/build/linux-stable && sudo cp -f .config /boot/config-$(kernel-version)provbpf$(provbpf-version)+
 
-install_bpf:
-	cd ~/build/linux-stable/tools/bpf && $(MAKE) install
+install_libbpf:
+	cd ~/build/linux-stable/tools/lib/bpf && sudo $(MAKE) install
+
+install_bpf_tools:
+	cd ~/build/linux-stable/tools/bpf && sudo $(MAKE) install
 
 install: install_header install_kernel
 
