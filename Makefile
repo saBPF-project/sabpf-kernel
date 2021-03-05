@@ -34,11 +34,16 @@ config_circle: copy_change
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cp -f ~/build/linux-stable/.config .config
 
-build_kernel: copy_change
+build_kernel_sub: copy_change
 	cd ~/build/linux-stable && $(MAKE) kernel W=1
-
-build: build_kernel
+	
+build_kernel:
 	cd ~/build/linux-stable && $(MAKE) -j16 ARCH=${arch}
+	
+build_bpf:
+	cd ~/build/linux-stable/tools/bpf && $(MAKE) all
+	
+build: build_kernel_sub build_kernel build_bpf
 
 install_header:
 	cd ~/build/linux-stable && sudo $(MAKE) headers_install ARCH=${arch} INSTALL_HDR_PATH=/usr
@@ -47,8 +52,11 @@ install_kernel:
 	cd ~/build/linux-stable && sudo $(MAKE) modules_install ARCH=${arch}
 	cd ~/build/linux-stable && sudo $(MAKE) install ARCH=${arch}
 	cd ~/build/linux-stable && sudo cp -f .config /boot/config-$(kernel-version)provbpf$(provbpf-version)+
+	
+install_bpf:
+	cd ~/build/linux-stable/tools/bpf && $(MAKE) install
 
-install: install_header install_kernel
+install: install_header install_kernel install_bpf
 
 clean:
 	cd ~/build/linux-stable && $(MAKE) clean
