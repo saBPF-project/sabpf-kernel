@@ -17,6 +17,8 @@
 #include <linux/btf_ids.h>
 #include <linux/ima.h>
 
+#include <net/sock.h>
+
 /* For every LSM hook that allows attachment of BPF programs, declare a nop
  * function where a BPF program can be attached.
  */
@@ -112,6 +114,8 @@ const struct bpf_func_proto bpf_inode_from_sock_proto = {
 	.ret_type	= RET_INTEGER, // Like bpf_get_current_task, the pointer is returned as u64 int
 	.arg1_type	= ARG_PTR_TO_MEM,
 };
+
+BTF_ID_LIST_SINGLE(bpf_inode_from_sock_btf_ids, struct, socket)
 /* systopia contrib end */
 
 static const struct bpf_func_proto *
