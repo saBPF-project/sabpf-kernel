@@ -3830,6 +3830,12 @@ union bpf_attr {
  *	Return
  *		A pointer to a struct socket on success or NULL if the file is
  *		not a socket.
+ *
+ * struct inode *bpf_inode_from_sock(struct socket *socket)
+ *	Description
+ *		Return the inode associated to the passed socket.
+ *	Return
+ *		A pointer to a struct inode.
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
