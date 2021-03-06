@@ -108,14 +108,19 @@ BPF_CALL_1(bpf_inode_from_sock, struct socket *, socket)
 //	return (struct inode *) &container_of(socket, struct socket_alloc, socket)->vfs_inode;
 }
 
+BTF_ID_LIST(bpf_inode_from_sock_btf_ids)
+BTF_ID(struct, inode)
+BTF_ID(struct, socket)
+
 const struct bpf_func_proto bpf_inode_from_sock_proto = {
 	.func		= bpf_inode_from_sock,
 	.gpl_only	= false,
-	.ret_type	= RET_INTEGER, // Like bpf_get_current_task, the pointer is returned as u64 int
-	.arg1_type	= ARG_PTR_TO_MEM,
+	.ret_type 	= RET_PTR_TO_BTF_ID,
+	.ret_btf_id	= &bpf_inode_from_sock_btf_ids[0],
+	.arg1_type 	= ARG_PTR_TO_BTF_ID,
+	.arg1_btf_id	= &bpf_inode_from_sock_btf_ids[1],
 };
 
-BTF_ID_LIST_SINGLE(bpf_inode_from_sock_btf_ids, struct, socket)
 /* systopia contrib end */
 
 static const struct bpf_func_proto *
