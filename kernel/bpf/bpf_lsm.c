@@ -105,7 +105,6 @@ const static struct bpf_func_proto bpf_ima_inode_hash_proto = {
 BPF_CALL_1(bpf_inode_from_sock, struct socket *, socket)
 {
 	return (long) SOCK_INODE(socket);
-//	return (struct inode *) &container_of(socket, struct socket_alloc, socket)->vfs_inode;
 }
 
 BTF_ID_LIST(bpf_inode_from_sock_btf_ids)
