@@ -149,6 +149,10 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	/* systopia contrib start */
 	case BPF_FUNC_inode_from_sock:
 		return &bpf_inode_from_sock_proto;
+	case BPF_FUNC_cred_storage_get:
+		return &bpf_cred_storage_get_proto;
+	case BPF_FUNC_cred_storage_delete:
+		return &bpf_cred_storage_delete_proto;	
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);
