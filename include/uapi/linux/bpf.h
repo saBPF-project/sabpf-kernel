@@ -4043,7 +4043,7 @@ union bpf_attr {
 	/* systopia contrib start */     \
 	FN(inode_from_sock),		\
 	FN(cred_storage_get),		\
-	FN(cred_storage_delete),	\	
+	FN(cred_storage_delete),	\
 	/* systopia contrib end */       \
 	/* */
 
