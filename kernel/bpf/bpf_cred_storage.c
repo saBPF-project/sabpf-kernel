@@ -133,7 +133,7 @@ static void *bpf_pid_cred_storage_lookup_elem(struct bpf_map *map, void *key)
 		goto out;
 	}
 
-	sdata = cred_storage_lookup(task->cred, map, true);
+	sdata = cred_storage_lookup((struct cred *)task->cred, map, true);
 	put_pid(pid);
 	return sdata ? sdata->data : NULL;
 out:
@@ -161,13 +161,13 @@ static int bpf_pid_cred_storage_update_elem(struct bpf_map *map, void *key,
 	 */
 	WARN_ON_ONCE(!rcu_read_lock_held());
 	task = pid_task(pid, PIDTYPE_PID);
-	if (!task || !task->cred || !cred_storage_ptr(task->cred)) {
+	if (!task || !task->cred || !cred_storage_ptr((struct cred *)task->cred)) {
 		err = -ENOENT;
 		goto out;
 	}
 
 	sdata = bpf_local_storage_update(
-		task->cred, (struct bpf_local_storage_map *)map, value, map_flags);
+		(struct cred *)task->cred, (struct bpf_local_storage_map *)map, value, map_flags);
 
 	err = PTR_ERR_OR_ZERO(sdata);
 out:
@@ -210,7 +210,7 @@ static int bpf_pid_cred_storage_delete_elem(struct bpf_map *map, void *key)
 		goto out;
 	}
 
-	err = cred_storage_delete(task->cred, map);
+	err = cred_storage_delete((struct cred *)task->cred, map);
 out:
 	put_pid(pid);
 	return err;
