@@ -439,6 +439,9 @@ class PrinterHelpers(Printer):
             'struct inode',
             'struct socket',
             'struct file',
+            # systopia contrib start #
+            'struct cred',
+            # systopia contrib end #
     ]
     known_types = {
             '...',
