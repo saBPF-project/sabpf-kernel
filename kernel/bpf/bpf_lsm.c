@@ -140,6 +140,24 @@ const struct bpf_func_proto bpf_inode_from_fown_proto = {
 	.arg1_btf_id	= &bpf_inode_from_fown_btf_ids[1],
 };
 
+BPF_CALL_1(bpf_file_from_fown, struct fown_struct *, fown)
+{
+	return (long) container_of(fown, struct file, f_owner);
+}
+
+BTF_ID_LIST(bpf_file_from_fown_btf_ids)
+BTF_ID(struct, file)
+BTF_ID(struct, fown_struct)
+
+const struct bpf_func_proto bpf_file_from_fown_proto = {
+	.func		= bpf_file_from_fown,
+	.gpl_only	= false,
+	.ret_type 	= RET_PTR_TO_BTF_ID,
+	.ret_btf_id	= &bpf_file_from_fown_btf_ids[0],
+	.arg1_type 	= ARG_PTR_TO_BTF_ID,
+	.arg1_btf_id	= &bpf_file_from_fown_btf_ids[1],
+};
+
 /* systopia contrib end */
 
 static const struct bpf_func_proto *
@@ -174,7 +192,9 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_cred_storage_delete:
 		return &bpf_cred_storage_delete_proto;
 	case BPF_FUNC_inode_from_fown:
-		return &bpf_inode_from_fown_proto;	
+		return &bpf_inode_from_fown_proto;
+	case BPF_FUNC_file_from_fown:
+		return &bpf_file_from_fown_proto;	
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);
