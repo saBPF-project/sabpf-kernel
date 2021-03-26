@@ -3875,6 +3875,12 @@ union bpf_attr {
  *		0 on success.
  *
  *		**-ENOENT** if the bpf_local_storage cannot be found.
+ *
+ * struct inode *bpf_inode_from_fown(struct fown_struct *fown)
+ *	Description
+ *		Returns the inode associated to a fown_struct.
+ *	Return
+ *		A pointer to a struct inode.
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4044,6 +4050,7 @@ union bpf_attr {
 	FN(inode_from_sock),		\
 	FN(cred_storage_get),		\
 	FN(cred_storage_delete),	\
+	FN(inode_from_fown),		\
 	/* systopia contrib end */       \
 	/* */
 

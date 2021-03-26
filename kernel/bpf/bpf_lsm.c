@@ -18,6 +18,7 @@
 #include <linux/ima.h>
 
 #include <net/sock.h>
+#include <linux/fs.h>
 
 /* For every LSM hook that allows attachment of BPF programs, declare a nop
  * function where a BPF program can be attached.
@@ -120,6 +121,25 @@ const struct bpf_func_proto bpf_inode_from_sock_proto = {
 	.arg1_btf_id	= &bpf_inode_from_sock_btf_ids[1],
 };
 
+BPF_CALL_1(bpf_inode_from_fown, struct fown_struct *, fown)
+{
+	struct file *file = container_of(fown, struct file, f_owner);
+	return (long) file->f_inode;
+}
+
+BTF_ID_LIST(bpf_inode_from_fown_btf_ids)
+BTF_ID(struct, inode)
+BTF_ID(struct, fown_struct)
+
+const struct bpf_func_proto bpf_inode_from_fown_proto = {
+	.func		= bpf_inode_from_fown,
+	.gpl_only	= false,
+	.ret_type 	= RET_PTR_TO_BTF_ID,
+	.ret_btf_id	= &bpf_inode_from_fown_btf_ids[0],
+	.arg1_type 	= ARG_PTR_TO_BTF_ID,
+	.arg1_btf_id	= &bpf_inode_from_fown_btf_ids[1],
+};
+
 /* systopia contrib end */
 
 static const struct bpf_func_proto *
@@ -152,7 +172,9 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_cred_storage_get:
 		return &bpf_cred_storage_get_proto;
 	case BPF_FUNC_cred_storage_delete:
-		return &bpf_cred_storage_delete_proto;	
+		return &bpf_cred_storage_delete_proto;
+	case BPF_FUNC_inode_from_fown:
+		return &bpf_inode_from_fown_proto;	
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);
