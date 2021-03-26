@@ -20,6 +20,7 @@ copy_change:
 	cp -r ./tools ~/build/linux-stable
 	cp -r ./security ~/build/linux-stable
 	cp -r ./scripts ~/build/linux-stable
+	cp -r ./net ~/build/linux-stable
 
 config: copy_change
 	cp -f /boot/config-$(shell uname -r) ~/build/linux-stable/.config
