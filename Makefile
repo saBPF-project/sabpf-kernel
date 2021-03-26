@@ -25,7 +25,6 @@ config: copy_change
 	cp -f /boot/config-$(shell uname -r) ~/build/linux-stable/.config
 	cd ~/build/linux-stable && ./scripts/kconfig/streamline_config.pl > config_strip
 	cd ~/build/linux-stable &&  cp -f config_strip .config
-	cd ~/build/linux-stable && $(MAKE) menuconfig
 	cd ~/build/linux-stable && sed -i -e "s/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor\"/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor,bpf\"/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_ADVANCED_ROUTER is not set/CONFIG_IP_ADVANCED_ROUTER=y/g" .config
@@ -38,6 +37,7 @@ config: copy_change
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCHED is not set/CONFIG_NET_SCHED=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCH_INGRESS is not set/CONFIG_NET_SCH_INGRESS=m/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_NETLINK is not set/CONFIG_SCSI_NETLINK=y/g" .config
+	cd ~/build/linux-stable && $(MAKE) menuconfig
 	cp -f ~/build/linux-stable/.config .config
 
 config_circle: copy_change
@@ -54,6 +54,8 @@ config_circle: copy_change
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCHED is not set/CONFIG_NET_SCHED=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCH_INGRESS is not set/CONFIG_NET_SCH_INGRESS=m/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_NETLINK is not set/CONFIG_SCSI_NETLINK=y/g" .config
+	cd ~/build/linux-stable && echo "CONFIG_NF_CT_NETLINK=m" >> .config
+	cd ~/build/linux-stable && echo "CONFIG_SCSI_NETLINK=y" >> .config
 	cp -f ~/build/linux-stable/.config .config
 
 build_kernel_sub: copy_change
