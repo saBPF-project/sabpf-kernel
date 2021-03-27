@@ -29,14 +29,22 @@ config: copy_change
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_ADVANCED_ROUTER is not set/CONFIG_IP_ADVANCED_ROUTER=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_MULTIPLE_TABLES is not set/CONFIG_IP_MULTIPLE_TABLES=y/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK is not set/CONFIG_NETFILTER_NETLINK=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_QUEUE is not set/CONFIG_NETFILTER_NETLINK_QUEUE=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_LOG is not set/CONFIG_NETFILTER_NETLINK_LOG=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NF_CT_NETLINK is not set/CONFIG_NF_CT_NETLINK=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_XT_TARGET_MARK is not set/CONFIG_NETFILTER_XT_TARGET_MARK=m/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK is not set/CONFIG_NETFILTER_NETLINK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_QUEUE is not set/CONFIG_NETFILTER_NETLINK_QUEUE=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_ACCT is not set/CONFIG_NETFILTER_NETLINK_ACCT=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_LOG is not set/CONFIG_NETFILTER_NETLINK_LOG=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NF_CT_NETLINK is not set/CONFIG_NF_CT_NETLINK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_XT_TARGET_MARK is not set/CONFIG_NETFILTER_XT_TARGET_MARK=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCHED is not set/CONFIG_NET_SCHED=y/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCH_INGRESS is not set/CONFIG_NET_SCH_INGRESS=m/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCH_INGRESS is not set/CONFIG_NET_SCH_INGRESS=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_NETLINK is not set/CONFIG_SCSI_NETLINK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_NETLINK is not set/CONFIG_SCSI_NETLINK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_FC_ATTRS is not set/CONFIG_SCSI_FC_ATTRS=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI is not set/CONFIG_SCSI=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NF_CONNTRACK is not set/CONFIG_NF_CONNTRACK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_XT_MARK is not set/CONFIG_NETFILTER_XT_MARK=y/g" .config
+	cd ~/build/linux-stable && echo "CONFIG_NF_CT_NETLINK=y" >> .config
+	cd ~/build/linux-stable && echo "CONFIG_SCSI_NETLINK=y" >> .config
 	cd ~/build/linux-stable && $(MAKE) menuconfig
 	cp -f ~/build/linux-stable/.config .config
 
@@ -46,15 +54,21 @@ config_circle: copy_change
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_ADVANCED_ROUTER is not set/CONFIG_IP_ADVANCED_ROUTER=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_MULTIPLE_TABLES is not set/CONFIG_IP_MULTIPLE_TABLES=y/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK is not set/CONFIG_NETFILTER_NETLINK=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_QUEUE is not set/CONFIG_NETFILTER_NETLINK_QUEUE=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_LOG is not set/CONFIG_NETFILTER_NETLINK_LOG=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NF_CT_NETLINK is not set/CONFIG_NF_CT_NETLINK=m/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_XT_TARGET_MARK is not set/CONFIG_NETFILTER_XT_TARGET_MARK=m/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK is not set/CONFIG_NETFILTER_NETLINK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_QUEUE is not set/CONFIG_NETFILTER_NETLINK_QUEUE=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_ACCT is not set/CONFIG_NETFILTER_NETLINK_ACCT=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_NETLINK_LOG is not set/CONFIG_NETFILTER_NETLINK_LOG=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NF_CT_NETLINK is not set/CONFIG_NF_CT_NETLINK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_XT_TARGET_MARK is not set/CONFIG_NETFILTER_XT_TARGET_MARK=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCHED is not set/CONFIG_NET_SCHED=y/g" .config
-	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCH_INGRESS is not set/CONFIG_NET_SCH_INGRESS=m/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NET_SCH_INGRESS is not set/CONFIG_NET_SCH_INGRESS=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_NETLINK is not set/CONFIG_SCSI_NETLINK=y/g" .config
-	cd ~/build/linux-stable && echo "CONFIG_NF_CT_NETLINK=m" >> .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_NETLINK is not set/CONFIG_SCSI_NETLINK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI_FC_ATTRS is not set/CONFIG_SCSI_FC_ATTRS=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_SCSI is not set/CONFIG_SCSI=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NF_CONNTRACK is not set/CONFIG_NF_CONNTRACK=y/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_NETFILTER_XT_MARK is not set/CONFIG_NETFILTER_XT_MARK=y/g" .config
+	cd ~/build/linux-stable && echo "CONFIG_NF_CT_NETLINK=y" >> .config
 	cd ~/build/linux-stable && echo "CONFIG_SCSI_NETLINK=y" >> .config
 	cp -f ~/build/linux-stable/.config .config
 
