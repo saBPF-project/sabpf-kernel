@@ -160,6 +160,7 @@ enum bpf_map_type {
 	BPF_MAP_TYPE_TASK_STORAGE,
 	/* systopia contrib start */
 	BPF_MAP_TYPE_CRED_STORAGE,
+	BPF_MAP_TYPE_MSG_STORAGE,
 	/* systopia contrib end */
 };
 
@@ -3881,6 +3882,42 @@ union bpf_attr {
  *		Returns the file associated to a fown_struct.
  *	Return
  *		A pointer to a struct file.
+ *
+ * void *bpf_msg_storage_get(struct bpf_map *map, struct msg_msg *msg, void *value, u64 flags)
+ *	Description
+ *		Get a bpf_local_storage from the *msg*.
+ *
+ *		Logically, it could be thought of as getting the value from
+ *		a *map* with *msg* as the **key**.  From this
+ *		perspective,  the usage is not much different from
+ *		**bpf_map_lookup_elem**\ (*map*, **&**\ *msg*) except this
+ *		helper enforces the key must be an msg and the map must also
+ *		be a **BPF_MAP_TYPE_MSG_STORAGE**.
+ *
+ *		Underneath, the value is stored locally at *msg* instead of
+ *		the *map*.  The *map* is used as the bpf-local-storage
+ *		"type". The bpf-local-storage "type" (i.e. the *map*) is
+ *		searched against all bpf_local_storage residing at *msg*.
+ *
+ *		An optional *flags* (**BPF_LOCAL_STORAGE_GET_F_CREATE**) can be
+ *		used such that a new bpf_local_storage will be
+ *		created if one does not exist.  *value* can be used
+ *		together with **BPF_LOCAL_STORAGE_GET_F_CREATE** to specify
+ *		the initial value of a bpf_local_storage.  If *value* is
+ *		**NULL**, the new bpf_local_storage will be zero initialized.
+ *	Return
+ *		A bpf_local_storage pointer is returned on success.
+ *
+ *		**NULL** if not found or there was an error in adding
+ *		a new bpf_local_storage.
+ *
+ * long bpf_msg_storage_delete(struct bpf_map *map, struct msg_msg *msg)
+ *	Description
+ *		Delete a bpf_local_storage from a *msg*.
+ *	Return
+ *		0 on success.
+ *
+ *		**-ENOENT** if the bpf_local_storage cannot be found.
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4051,6 +4088,8 @@ union bpf_attr {
 	FN(cred_storage_get),		\
 	FN(cred_storage_delete),	\
 	FN(file_from_fown),		\
+	FN(msg_storage_get),		\
+	FN(msg_storage_delete),		\
 	/* systopia contrib end */       \
 	/* */
 

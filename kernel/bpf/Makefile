@@ -13,6 +13,7 @@ obj-${CONFIG_BPF_LSM}	  += bpf_inode_storage.o
 obj-${CONFIG_BPF_LSM}	  += bpf_task_storage.o
 # systopia contrib start #
 obj-${CONFIG_BPF_LSM}	  += bpf_cred_storage.o
+obj-${CONFIG_BPF_LSM}	  += bpf_msg_storage.o
 # systopia contrib end #
 obj-$(CONFIG_BPF_SYSCALL) += disasm.o
 obj-$(CONFIG_BPF_JIT) += trampoline.o
