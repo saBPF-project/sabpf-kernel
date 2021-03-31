@@ -4498,6 +4498,12 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
 		    func_id != BPF_FUNC_msg_storage_delete)
 			goto error;
 		break;
+		
+	case BPF_MAP_TYPE_IPC_STORAGE:
+		if (func_id != BPF_FUNC_ipc_storage_get &&
+		    func_id != BPF_FUNC_ipc_storage_delete)
+			goto error;
+		break;
 	/* systopia contrib end */
 	default:
 		break;
@@ -4592,6 +4598,12 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
 	case BPF_FUNC_msg_storage_get:
 	case BPF_FUNC_msg_storage_delete:
 		if (map->map_type != BPF_MAP_TYPE_MSG_STORAGE)
+			goto error;
+		break;
+		
+	case BPF_FUNC_ipc_storage_get:
+	case BPF_FUNC_ipc_storage_delete:
+		if (map->map_type != BPF_MAP_TYPE_IPC_STORAGE)
 			goto error;
 		break;
 	/* systopia contrib end */

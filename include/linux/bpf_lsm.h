@@ -8,6 +8,7 @@
 #define _LINUX_BPF_LSM_H
 
 #include <linux/msg.h>
+#include <linux/ipc.h>
 #include <linux/sched.h>
 #include <linux/bpf.h>
 #include <linux/lsm_hooks.h>
@@ -66,6 +67,15 @@ static inline struct bpf_storage_blob *bpf_msg(
 	
 	return msg->security + bpf_lsm_blob_sizes.lbs_msg_msg;
 }
+
+static inline struct bpf_storage_blob *bpf_ipc(
+	const struct kern_ipc_perm *ipc)
+{
+	if (unlikely(!ipc->security))
+		return NULL;
+	
+	return ipc->security + bpf_lsm_blob_sizes.lbs_ipc;
+}
 /* systopia contrib end */
 
 extern const struct bpf_func_proto bpf_inode_storage_get_proto;
@@ -77,12 +87,15 @@ extern const struct bpf_func_proto bpf_cred_storage_get_proto;
 extern const struct bpf_func_proto bpf_cred_storage_delete_proto;
 extern const struct bpf_func_proto bpf_msg_storage_get_proto;
 extern const struct bpf_func_proto bpf_msg_storage_delete_proto;
+extern const struct bpf_func_proto bpf_ipc_storage_get_proto;
+extern const struct bpf_func_proto bpf_ipc_storage_delete_proto;
 /* systopia contrib end */
 void bpf_inode_storage_free(struct inode *inode);
 void bpf_task_storage_free(struct task_struct *task);
 /* systopia contrib start */
 void bpf_cred_storage_free(struct cred *cred);
 void bpf_msg_storage_free(struct msg_msg *msg);
+void bpf_ipc_storage_free(struct kern_ipc_perm *ipc);
 /* systopia contrib end */
 
 #else /* !CONFIG_BPF_LSM */
@@ -122,6 +135,13 @@ static inline struct bpf_storage_blob *bpf_msg(
 {
 	return NULL;
 }
+
+static inline struct bpf_storage_blob *bpf_ipc(
+	const struct kern_ipc_perm *ipc)
+{
+	return NULL;
+}
+
 /* systopia contrib end */
 
 static inline void bpf_inode_storage_free(struct inode *inode)
@@ -138,6 +158,10 @@ static inline void bpf_cred_storage_free(struct cred *cred)
 }
 
 static inline void bpf_msg_storage_free(struct msg_msg *msg)
+{
+}
+
+static inline void bpf_ipc_storage_free(struct kern_ipc_perm *ipc)
 {
 }
 /* systopia contrib end */
