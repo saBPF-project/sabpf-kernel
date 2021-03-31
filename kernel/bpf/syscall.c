@@ -779,7 +779,8 @@ static int map_check_btf(struct bpf_map *map, const struct btf *btf,
 		    map->map_type != BPF_MAP_TYPE_INODE_STORAGE &&
 		    map->map_type != BPF_MAP_TYPE_TASK_STORAGE &&
 		    /* systopia contrib start */
-		    map->map_type != BPF_MAP_TYPE_CRED_STORAGE)
+		    map->map_type != BPF_MAP_TYPE_CRED_STORAGE &&
+		    map->map_type != BPF_MAP_TYPE_MSG_STORAGE)
 		    /* systopia contrib end */
 			return -ENOTSUPP;
 		if (map->spin_lock_off + sizeof(struct bpf_spin_lock) >
