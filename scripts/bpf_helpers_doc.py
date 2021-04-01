@@ -443,6 +443,7 @@ class PrinterHelpers(Printer):
             'struct cred',
             'struct fown_struct',
             'struct msg_msg',
+            'struct kern_ipc_perm',
             # systopia contrib end #
     ]
     known_types = {
@@ -495,6 +496,7 @@ class PrinterHelpers(Printer):
             'struct cred',
             'struct fown_struct',
             'struct msg_msg',
+            'struct kern_ipc_perm',
             # systopia contrib end #
     }
     mapped_types = {

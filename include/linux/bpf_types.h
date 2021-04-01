@@ -113,6 +113,7 @@ BPF_MAP_TYPE(BPF_MAP_TYPE_TASK_STORAGE, task_storage_map_ops)
 /* systopia contrib start */
 BPF_MAP_TYPE(BPF_MAP_TYPE_CRED_STORAGE, cred_storage_map_ops)
 BPF_MAP_TYPE(BPF_MAP_TYPE_MSG_STORAGE, msg_storage_map_ops)
+BPF_MAP_TYPE(BPF_MAP_TYPE_IPC_STORAGE, ipc_storage_map_ops)
 /* systopia contrib end */
 #endif
 BPF_MAP_TYPE(BPF_MAP_TYPE_CPUMAP, cpu_map_ops)

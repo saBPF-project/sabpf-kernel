@@ -16,6 +16,7 @@ static struct security_hook_list bpf_lsm_hooks[] __lsm_ro_after_init = {
 	/* systopia contrib start */
 	LSM_HOOK_INIT(cred_free, bpf_cred_storage_free),
 	LSM_HOOK_INIT(msg_msg_free_security, bpf_msg_storage_free),
+	LSM_HOOK_INIT(sem_free_security, bpf_ipc_storage_free),
 	/* systopia contrib end */
 };
 
@@ -32,6 +33,7 @@ struct lsm_blob_sizes bpf_lsm_blob_sizes __lsm_ro_after_init = {
 	/* systopia contrib start */
 	.lbs_cred = sizeof(struct bpf_storage_blob),
 	.lbs_msg_msg = sizeof(struct bpf_storage_blob),
+	.lbs_ipc = sizeof(struct bpf_storage_blob),
 	/* systopia contrib end */
 };
 

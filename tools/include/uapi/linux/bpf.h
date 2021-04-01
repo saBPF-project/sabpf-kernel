@@ -161,6 +161,7 @@ enum bpf_map_type {
 	/* systopia contrib start */
 	BPF_MAP_TYPE_CRED_STORAGE,
 	BPF_MAP_TYPE_MSG_STORAGE,
+	BPF_MAP_TYPE_IPC_STORAGE,
 	/* systopia contrib end */
 };
 
@@ -3918,6 +3919,42 @@ union bpf_attr {
  *		0 on success.
  *
  *		**-ENOENT** if the bpf_local_storage cannot be found.
+ * void *bpf_ipc_storage_get(struct bpf_map *map, struct kern_ipc_perm *ipc, void *value, u64 flags)
+ *	Description
+ *		Get a bpf_local_storage from the *ipc*.
+ *
+ *		Logically, it could be thought of as getting the value from
+ *		a *map* with *ipc* as the **key**.  From this
+ *		perspective,  the usage is not much different from
+ *		**bpf_map_lookup_elem**\ (*map*, **&**\ *ipc*) except this
+ *		helper enforces the key must be an ipc and the map must also
+ *		be a **BPF_MAP_TYPE_IPC_STORAGE**.
+ *
+ *		Underneath, the value is stored locally at *ipc* instead of
+ *		the *map*.  The *map* is used as the bpf-local-storage
+ *		"type". The bpf-local-storage "type" (i.e. the *map*) is
+ *		searched against all bpf_local_storage residing at *ipc*.
+ *
+ *		An optional *flags* (**BPF_LOCAL_STORAGE_GET_F_CREATE**) can be
+ *		used such that a new bpf_local_storage will be
+ *		created if one does not exist.  *value* can be used
+ *		together with **BPF_LOCAL_STORAGE_GET_F_CREATE** to specify
+ *		the initial value of a bpf_local_storage.  If *value* is
+ *		**NULL**, the new bpf_local_storage will be zero initialized.
+ *	Return
+ *		A bpf_local_storage pointer is returned on success.
+ *
+ *		**NULL** if not found or there was an error in adding
+ *		a new bpf_local_storage.
+ *
+ * long bpf_ipc_storage_delete(struct bpf_map *map, struct kern_ipc_perm *ipc)
+ *	Description
+ *		Delete a bpf_local_storage from a *ipc*.
+ *	Return
+ *		0 on success.
+ *
+ *		**-ENOENT** if the bpf_local_storage cannot be found.
+ *
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4090,6 +4127,8 @@ union bpf_attr {
 	FN(file_from_fown),		\
 	FN(msg_storage_get),		\
 	FN(msg_storage_delete),		\
+	FN(ipc_storage_get),		\
+	FN(ipc_storage_delete),		\
 	/* systopia contrib end */       \
 	/* */
 

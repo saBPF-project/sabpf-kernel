@@ -177,7 +177,11 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_msg_storage_get:
 		return &bpf_msg_storage_get_proto;
 	case BPF_FUNC_msg_storage_delete:
-		return &bpf_msg_storage_delete_proto;	
+		return &bpf_msg_storage_delete_proto;
+	case BPF_FUNC_ipc_storage_get:
+		return &bpf_ipc_storage_get_proto;
+	case BPF_FUNC_ipc_storage_delete:
+		return &bpf_ipc_storage_delete_proto;	
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);
