@@ -3956,6 +3956,12 @@ union bpf_attr {
  *
  *		**-ENOENT** if the bpf_local_storage cannot be found.
  *
+ * struct inode *bpf_dentry_from_inode(struct inode *inode)
+ *	Description
+ *		Returns the dentry associated to an inode.
+ *	Return
+ *		A pointer to a struct inode.
+ *
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4130,6 +4136,7 @@ union bpf_attr {
 	FN(msg_storage_delete),		\
 	FN(ipc_storage_get),		\
 	FN(ipc_storage_delete),		\
+	FN(dentry_from_inode),		\
 	/* systopia contrib end */       \
 	/* */
 
