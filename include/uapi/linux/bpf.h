@@ -3962,6 +3962,15 @@ union bpf_attr {
  *	Return
  *		A pointer to a struct inode.
  *
+ * void bpf_release_dentry(struct dentry *dentry)
+ *	Description
+ *		Returns the dentry. This will drop the usage count and if appropriate
+ *		call the dentry unlink method as well as removing it from the queues and
+ * 		releasing its resources. If the parent dentries were scheduled for release
+ * 		they too may now get deleted.
+ *	Return
+ *		Nothing.
+ *
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4137,6 +4146,7 @@ union bpf_attr {
 	FN(ipc_storage_get),		\
 	FN(ipc_storage_delete),		\
 	FN(dentry_from_inode),		\
+	FN(release_dentry),		\
 	/* systopia contrib end */       \
 	/* */
 
