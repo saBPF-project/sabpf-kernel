@@ -19,6 +19,7 @@
 
 #include <net/sock.h>
 #include <linux/fs.h>
+#include <linux/dcache.h>
 
 /* For every LSM hook that allows attachment of BPF programs, declare a nop
  * function where a BPF program can be attached.
@@ -139,6 +140,42 @@ const struct bpf_func_proto bpf_file_from_fown_proto = {
 	.arg1_btf_id	= &bpf_file_from_fown_btf_ids[1],
 };
 
+/* Users need to call dput after use */
+BPF_CALL_1(bpf_dentry_from_inode, struct inode *, inode)
+{
+	return (long) d_find_alias(inode);
+}
+
+BTF_ID_LIST(bpf_dentry_from_inode_btf_ids)
+BTF_ID(struct, dentry)
+BTF_ID(struct, inode)
+
+const struct bpf_func_proto bpf_dentry_from_inode_proto = {
+	.func		= bpf_dentry_from_inode,
+	.gpl_only	= false,
+	.ret_type 	= RET_PTR_TO_BTF_ID,
+	.ret_btf_id	= &bpf_dentry_from_inode_btf_ids[0],
+	.arg1_type 	= ARG_PTR_TO_BTF_ID,
+	.arg1_btf_id	= &bpf_dentry_from_inode_btf_ids[1],
+};
+
+BPF_CALL_1(bpf_release_dentry, struct dentry *, dentry)
+{
+	dput(dentry);
+	return 0;
+}
+
+BTF_ID_LIST(bpf_release_dentry_btf_ids)
+BTF_ID(struct, dentry)
+
+const struct bpf_func_proto bpf_release_dentry_proto = {
+	.func		= bpf_release_dentry,
+	.gpl_only	= false,
+	.ret_type 	= RET_VOID,
+	.arg1_type 	= ARG_PTR_TO_BTF_ID,
+	.arg1_btf_id	= &bpf_release_dentry_btf_ids[0],
+};
+
 /* systopia contrib end */
 
 static const struct bpf_func_proto *
@@ -181,7 +218,11 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_ipc_storage_get:
 		return &bpf_ipc_storage_get_proto;
 	case BPF_FUNC_ipc_storage_delete:
-		return &bpf_ipc_storage_delete_proto;	
+		return &bpf_ipc_storage_delete_proto;
+	case BPF_FUNC_dentry_from_inode:
+		return &bpf_dentry_from_inode_proto;
+	case BPF_FUNC_release_dentry:
+		return &bpf_release_dentry_proto;	
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);

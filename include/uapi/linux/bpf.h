@@ -3956,6 +3956,21 @@ union bpf_attr {
  *
  *		**-ENOENT** if the bpf_local_storage cannot be found.
  *
+ * struct inode *bpf_dentry_from_inode(struct inode *inode)
+ *	Description
+ *		Returns the dentry associated to an inode.
+ *	Return
+ *		A pointer to a struct inode.
+ *
+ * void bpf_release_dentry(struct dentry *dentry)
+ *	Description
+ *		Returns the dentry. This will drop the usage count and if appropriate
+ *		call the dentry unlink method as well as removing it from the queues and
+ * 		releasing its resources. If the parent dentries were scheduled for release
+ * 		they too may now get deleted.
+ *	Return
+ *		Nothing.
+ *
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4130,6 +4145,8 @@ union bpf_attr {
 	FN(msg_storage_delete),		\
 	FN(ipc_storage_get),		\
 	FN(ipc_storage_delete),		\
+	FN(dentry_from_inode),		\
+	FN(release_dentry),		\
 	/* systopia contrib end */       \
 	/* */
 
