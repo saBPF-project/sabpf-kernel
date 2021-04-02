@@ -76,6 +76,15 @@ static inline struct bpf_storage_blob *bpf_ipc(
 	
 	return ipc->security + bpf_lsm_blob_sizes.lbs_ipc;
 }
+
+static inline struct bpf_storage_blob *bpf_file(
+	const struct file *file)
+{
+	if (unlikely(!file->f_security))
+		return NULL;
+	
+	return file->f_security + bpf_lsm_blob_sizes.lbs_file;
+}
 /* systopia contrib end */
 
 extern const struct bpf_func_proto bpf_inode_storage_get_proto;
@@ -89,6 +98,8 @@ extern const struct bpf_func_proto bpf_msg_storage_get_proto;
 extern const struct bpf_func_proto bpf_msg_storage_delete_proto;
 extern const struct bpf_func_proto bpf_ipc_storage_get_proto;
 extern const struct bpf_func_proto bpf_ipc_storage_delete_proto;
+extern const struct bpf_func_proto bpf_file_storage_get_proto;
+extern const struct bpf_func_proto bpf_file_storage_delete_proto;
 /* systopia contrib end */
 void bpf_inode_storage_free(struct inode *inode);
 void bpf_task_storage_free(struct task_struct *task);
@@ -96,6 +107,7 @@ void bpf_task_storage_free(struct task_struct *task);
 void bpf_cred_storage_free(struct cred *cred);
 void bpf_msg_storage_free(struct msg_msg *msg);
 void bpf_ipc_storage_free(struct kern_ipc_perm *ipc);
+void bpf_file_storage_free(struct file *file);
 /* systopia contrib end */
 
 #else /* !CONFIG_BPF_LSM */
@@ -142,6 +154,11 @@ static inline struct bpf_storage_blob *bpf_ipc(
 	return NULL;
 }
 
+static inline struct bpf_storage_blob *bpf_file(
+	const struct file *file)
+{
+	return NULL;
+}
 /* systopia contrib end */
 
 static inline void bpf_inode_storage_free(struct inode *inode)
@@ -162,6 +179,10 @@ static inline void bpf_msg_storage_free(struct msg_msg *msg)
 }
 
 static inline void bpf_ipc_storage_free(struct kern_ipc_perm *ipc)
+{
+}
+
+static inline void bpf_file_storage_free(struct file *file)
 {
 }
 /* systopia contrib end */
