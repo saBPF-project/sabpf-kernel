@@ -11,8 +11,8 @@ prepare:
 	cd ~/build/linux-stable && sed -i -e "s/EXTRAVERSION =/EXTRAVERSION = provbpf$(provbpf-version)/g" Makefile
 
 delete:
-	cd ~/build && rm -rf ./pristine
-	cd ~/build && rm -rf ./linux-stable
+	cd ~/build && sudo rm -rf ./pristine
+	cd ~/build && sudo rm -rf ./linux-stable
 
 copy_change:
 	cp -r ./kernel ~/build/linux-stable
