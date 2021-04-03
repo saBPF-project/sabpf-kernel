@@ -4007,6 +4007,12 @@ union bpf_attr {
  *
  *		**-ENOENT** if the bpf_local_storage cannot be found.
  *
+ * void *bpf_dentry_path(struct dentry *dentry, char *buf, int buflen)
+ *	Description
+ *		Returns the full pathname from root of the file system into the buffer.
+ *	Return
+ *		A string containing the pathname.
+ *
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4185,6 +4191,7 @@ union bpf_attr {
 	FN(dentry_put),			\
 	FN(file_storage_get),		\
 	FN(file_storage_delete),	\
+	FN(dentry_path),		\
 	/* systopia contrib end */       \
 	/* */
 

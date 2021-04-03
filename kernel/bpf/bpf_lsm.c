@@ -176,6 +176,24 @@ const struct bpf_func_proto bpf_dentry_put_proto = {
 	.arg1_btf_id	= &bpf_dentry_put_btf_ids[0],
 };
 
+BPF_CALL_3(bpf_dentry_path, struct dentry *, dentry, char *, buf, int, buflen)
+{
+	return (long) dentry_path_raw(dentry, buf, buflen);
+}
+
+BTF_ID_LIST(bpf_dentry_path_btf_ids)
+BTF_ID(struct, dentry)
+
+const struct bpf_func_proto bpf_dentry_path_proto = {
+	.func		= bpf_dentry_path,
+	.gpl_only	= false,
+	.ret_type 	= RET_PTR_TO_MEM_OR_BTF_ID_OR_NULL,
+	.arg1_type 	= ARG_PTR_TO_BTF_ID,
+	.arg1_btf_id	= &bpf_dentry_path_btf_ids[0],
+	.arg2_type 	= ARG_PTR_TO_MEM,
+	.arg3_type 	= ARG_CONST_SIZE,
+};
+
 /* systopia contrib end */
 
 static const struct bpf_func_proto *
@@ -226,7 +244,9 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_file_storage_get:
 		return &bpf_file_storage_get_proto;
 	case BPF_FUNC_file_storage_delete:
-		return &bpf_file_storage_delete_proto;	
+		return &bpf_file_storage_delete_proto;
+	case BPF_FUNC_dentry_path:
+		return &bpf_dentry_path_proto;	
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);
