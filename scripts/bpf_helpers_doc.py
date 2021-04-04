@@ -442,6 +442,7 @@ class PrinterHelpers(Printer):
             # systopia contrib start #
             'struct cred',
             'struct fown_struct',
+            'struct sk_buff',
             # systopia contrib end #
     ]
     known_types = {
@@ -493,6 +494,7 @@ class PrinterHelpers(Printer):
             # systopia contrib start #
             'struct cred',
             'struct fown_struct',
+            'struct sk_buff',
             # systopia contrib end #
     }
     mapped_types = {

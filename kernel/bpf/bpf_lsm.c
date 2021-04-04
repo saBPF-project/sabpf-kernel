@@ -139,6 +139,40 @@ const struct bpf_func_proto bpf_file_from_fown_proto = {
 	.arg1_btf_id	= &bpf_file_from_fown_btf_ids[1],
 };
 
+BPF_CALL_4(bpf_skb_load_bytes_btf, const struct sk_buff *, skb, u32, offset,
+	   void *, to, u32, len)
+{
+	void *ptr;
+
+	if (unlikely(offset > 0xffff))
+		goto err_clear;
+
+	ptr = skb_header_pointer(skb, offset, len, to);
+	if (unlikely(!ptr))
+		goto err_clear;
+	if (ptr != to)
+		memcpy(to, ptr, len);
+
+	return 0;
+err_clear:
+	memset(to, 0, len);
+	return -EFAULT;
+}
+
+BTF_ID_LIST(bpf_skb_load_bytes_btf_btf_ids)
+BTF_ID(struct, sk_buff)
+
+static const struct bpf_func_proto bpf_skb_load_bytes_btf_proto = {
+	.func		= bpf_skb_load_bytes_btf,
+	.gpl_only	= false,
+	.ret_type	= RET_INTEGER,
+	.arg1_type	= ARG_PTR_TO_BTF_ID,
+	.arg1_btf_id	= &bpf_skb_load_bytes_btf_btf_ids[0],
+	.arg2_type	= ARG_ANYTHING,
+	.arg3_type	= ARG_PTR_TO_UNINIT_MEM,
+	.arg4_type	= ARG_CONST_SIZE,
+};
+
 /* systopia contrib end */
 
 static const struct bpf_func_proto *
@@ -174,6 +208,8 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 		return &bpf_cred_storage_delete_proto;
 	case BPF_FUNC_file_from_fown:
 		return &bpf_file_from_fown_proto;
+	case BPF_FUNC_skb_load_bytes_btf:
+		return &bpf_skb_load_bytes_btf_proto;
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);

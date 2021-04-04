@@ -3881,6 +3881,14 @@ union bpf_attr {
  *		Returns the file associated to a fown_struct.
  *	Return
  *		A pointer to a struct file.
+ *
+ * long bpf_skb_load_bytes_btf(const struct sk_buff *skb, u32 offset, void *to, u32 len)
+ * 	Description
+ * 		Same as the **bpf_skb_load_bytes** helper function, 
+ *		except it uses BTF for **sk_buff** instead of context.
+ * 	Return
+ * 		0 on success, or a negative error in case of failure.
+ *
  */
 #define __BPF_FUNC_MAPPER(FN)		\
 	FN(unspec),			\
@@ -4051,6 +4059,7 @@ union bpf_attr {
 	FN(cred_storage_get),		\
 	FN(cred_storage_delete),	\
 	FN(file_from_fown),		\
+	FN(skb_load_bytes_btf),		\
 	/* systopia contrib end */       \
 	/* */
 
