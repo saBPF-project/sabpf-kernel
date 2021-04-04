@@ -174,8 +174,6 @@ bpf_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 		return &bpf_cred_storage_delete_proto;
 	case BPF_FUNC_file_from_fown:
 		return &bpf_file_from_fown_proto;
-	case BPF_FUNC_skb_load_bytes:
-		return &bpf_skb_load_bytes_proto;
 	/* systopia contrib end */
 	default:
 		return tracing_prog_func_proto(func_id, prog);
