@@ -3957,11 +3957,11 @@ union bpf_attr {
  *
  *		**-ENOENT** if the bpf_local_storage cannot be found.
  *
- * struct inode *bpf_dentry_get(struct inode *inode)
+ * struct dentry *bpf_dentry_get(struct inode *inode)
  *	Description
  *		Returns the dentry associated to an inode.
  *	Return
- *		A pointer to a struct inode.
+ *		A pointer to a struct dentry.
  *
  * void bpf_dentry_put(struct dentry *dentry)
  *	Description
