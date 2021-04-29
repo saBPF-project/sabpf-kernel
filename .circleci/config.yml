@@ -61,7 +61,7 @@ jobs:
         - run: 'git config --global user.name "Soo Yee Lim"'
         - run: 'git config --global user.email "sooyee.lim@bristol.ac.uk"'
         - run: 'make prepare_camflow'
-        - run: 'make config_camflow'
+        - run: 'make config_circle_camflow'
         - run: 'make build'
   patch:
     docker:
