@@ -58,6 +58,8 @@ jobs:
         - run: 'apt-get install -y build-essential rsync libtool libncurses5-dev'
         - run: 'apt-get install -y libncursesw5-dev bc pkg-config zsh libelf-dev'
         - run: 'apt-get install -y bison flex'
+        - run: 'git config --global user.name "Soo Yee Lim"'
+        - run: 'git config --global user.email "sooyee.lim@bristol.ac.uk"'
         - run: 'make prepare_camflow'
         - run: 'make config_camflow'
         - run: 'make build'
