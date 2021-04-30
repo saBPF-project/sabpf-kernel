@@ -55,7 +55,7 @@ static inline struct bpf_storage_blob *bpf_cred(
 {
 	if (unlikely(!cred->security))
 		return NULL;
-	
+
 	return cred->security + bpf_lsm_blob_sizes.lbs_cred;
 }
 
@@ -64,7 +64,7 @@ static inline struct bpf_storage_blob *bpf_msg(
 {
 	if (unlikely(!msg->security))
 		return NULL;
-	
+
 	return msg->security + bpf_lsm_blob_sizes.lbs_msg_msg;
 }
 
@@ -73,7 +73,7 @@ static inline struct bpf_storage_blob *bpf_ipc(
 {
 	if (unlikely(!ipc->security))
 		return NULL;
-	
+
 	return ipc->security + bpf_lsm_blob_sizes.lbs_ipc;
 }
 
@@ -82,7 +82,7 @@ static inline struct bpf_storage_blob *bpf_file(
 {
 	if (unlikely(!file->f_security))
 		return NULL;
-	
+
 	return file->f_security + bpf_lsm_blob_sizes.lbs_file;
 }
 /* systopia contrib end */

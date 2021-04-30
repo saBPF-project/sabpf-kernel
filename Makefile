@@ -25,7 +25,7 @@ config: copy_change
 	cp -f /boot/config-$(shell uname -r) ~/build/linux-stable/.config
 	cd ~/build/linux-stable && ./scripts/kconfig/streamline_config.pl > config_strip
 	cd ~/build/linux-stable &&  cp -f config_strip .config
-	cd ~/build/linux-stable && sed -i -e "s/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor\"/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor,bpf\"/g" .config
+	cd ~/build/linux-stable && sed -i -e "s/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor\"/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor,cgbpf,bpf\"/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_ADVANCED_ROUTER is not set/CONFIG_IP_ADVANCED_ROUTER=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_MULTIPLE_TABLES is not set/CONFIG_IP_MULTIPLE_TABLES=y/g" .config
@@ -75,6 +75,9 @@ config_circle: copy_change
 build_kernel_sub: copy_change
 	cd ~/build/linux-stable && $(MAKE) kernel W=1
 
+build_security_sub:
+	cd ~/build/linux-stable && $(MAKE) security W=1
+
 build_kernel:
 	cd ~/build/linux-stable && $(MAKE) -j16 ARCH=${arch}
 
@@ -89,7 +92,7 @@ build_bpftool:
 
 build_bpf: build_libbpf build_resolve_btfids build_bpftool
 
-build: build_kernel_sub build_kernel build_bpf
+build: build_kernel_sub compile_security_sub build_kernel build_bpf
 
 install_header:
 	cd ~/build/linux-stable && sudo $(MAKE) headers_install ARCH=${arch} INSTALL_HDR_PATH=/usr

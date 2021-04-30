@@ -51,7 +51,7 @@ MAP COMMANDS
 |		| **devmap** | **devmap_hash** | **sockmap** | **cpumap** | **xskmap** | **sockhash**
 |		| **cgroup_storage** | **reuseport_sockarray** | **percpu_cgroup_storage**
 |		| **queue** | **stack** | **sk_storage** | **struct_ops** | **ringbuf** | **inode_storage**
-		| **task_storage** | **cred_storage** | **msg_storage** | **ipc_storage** 
+		| **task_storage** | **cred_storage** | **msg_storage** | **ipc_storage**
 		| **file_storage** }
 
 DESCRIPTION

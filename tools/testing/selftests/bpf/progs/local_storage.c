@@ -200,16 +200,16 @@ int BPF_PROG(cred_prepare, struct cred *new, const struct cred *old, gfp_t gfp)
 
 	if (pid != monitored_pid)
 		return 0;
-		
+
 	storage = bpf_cred_storage_get(&cred_storage_map, new, 0, BPF_LOCAL_STORAGE_GET_F_CREATE);
-	
+
 	if (!storage)
 		return 0;
 
 	bpf_spin_lock(&storage->lock);
 	storage->value = DUMMY_STORAGE_VALUE;
 	bpf_spin_unlock(&storage->lock);
-	
+
 	return 0;
 }
 /* systopia contrib end */

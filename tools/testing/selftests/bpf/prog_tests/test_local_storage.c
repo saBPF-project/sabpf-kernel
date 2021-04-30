@@ -135,7 +135,7 @@ void test_test_local_storage(void)
 	if (!check_syscall_operations(bpf_map__fd(skel->maps.task_storage_map),
 				      task_fd))
 		goto close_prog;
-	
+
 	/* systopia contrib start */
 	if (!check_syscall_operations(bpf_map__fd(skel->maps.cred_storage_map),
 				      task_fd))

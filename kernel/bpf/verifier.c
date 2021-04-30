@@ -4492,19 +4492,19 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
 		    func_id != BPF_FUNC_cred_storage_delete)
 			goto error;
 		break;
-		
+
 	case BPF_MAP_TYPE_MSG_STORAGE:
 		if (func_id != BPF_FUNC_msg_storage_get &&
 		    func_id != BPF_FUNC_msg_storage_delete)
 			goto error;
 		break;
-		
+
 	case BPF_MAP_TYPE_IPC_STORAGE:
 		if (func_id != BPF_FUNC_ipc_storage_get &&
 		    func_id != BPF_FUNC_ipc_storage_delete)
 			goto error;
 		break;
-		
+
 	case BPF_MAP_TYPE_FILE_STORAGE:
 		if (func_id != BPF_FUNC_file_storage_get &&
 		    func_id != BPF_FUNC_file_storage_delete)
@@ -4600,19 +4600,19 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
 		if (map->map_type != BPF_MAP_TYPE_CRED_STORAGE)
 			goto error;
 		break;
-		
+
 	case BPF_FUNC_msg_storage_get:
 	case BPF_FUNC_msg_storage_delete:
 		if (map->map_type != BPF_MAP_TYPE_MSG_STORAGE)
 			goto error;
 		break;
-		
+
 	case BPF_FUNC_ipc_storage_get:
 	case BPF_FUNC_ipc_storage_delete:
 		if (map->map_type != BPF_MAP_TYPE_IPC_STORAGE)
 			goto error;
 		break;
-		
+
 	case BPF_FUNC_file_storage_get:
 	case BPF_FUNC_file_storage_delete:
 		if (map->map_type != BPF_MAP_TYPE_FILE_STORAGE)
