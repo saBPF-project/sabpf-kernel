@@ -75,7 +75,7 @@ config_circle: copy_change
 build_kernel_sub: copy_change
 	cd ~/build/linux-stable && $(MAKE) kernel W=1
 
-build_security_sub:
+build_security_sub: copy_change
 	cd ~/build/linux-stable && $(MAKE) security W=1
 
 build_kernel:

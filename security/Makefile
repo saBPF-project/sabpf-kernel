@@ -13,7 +13,7 @@ subdir-$(CONFIG_SECURITY_LOADPIN)	+= loadpin
 subdir-$(CONFIG_SECURITY_SAFESETID)    += safesetid
 subdir-$(CONFIG_SECURITY_LOCKDOWN_LSM)	+= lockdown
 subdir-$(CONFIG_BPF_LSM)		+= bpf
-subdir-$(CONFIG_SECURITY_CGBPF_LSM)		+= cgbpf
+subdir-$(CONFIG_SECURITY_CGBPF)		+= cgbpf
 
 # always enable default capabilities
 obj-y					+= commoncap.o
@@ -33,7 +33,7 @@ obj-$(CONFIG_SECURITY_SAFESETID)       += safesetid/
 obj-$(CONFIG_SECURITY_LOCKDOWN_LSM)	+= lockdown/
 obj-$(CONFIG_CGROUPS)			+= device_cgroup.o
 obj-$(CONFIG_BPF_LSM)			+= bpf/
-obj-$(CONFIG_SECURITY_CGBPF_LSM)			+= bpf/
+obj-$(CONFIG_SECURITY_CGBPF)			+= cgbpf/
 
 # Object integrity file lists
 subdir-$(CONFIG_INTEGRITY)		+= integrity
