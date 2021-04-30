@@ -93,7 +93,7 @@ build_bpftool:
 
 build_bpf: build_libbpf build_resolve_btfids build_bpftool
 
-build: build_kernel_sub compile_security_sub build_kernel build_bpf
+build: build_kernel_sub build_security_sub build_kernel build_bpf
 
 install_header:
 	cd ~/build/linux-stable && sudo $(MAKE) headers_install ARCH=${arch} INSTALL_HDR_PATH=/usr
