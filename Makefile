@@ -164,8 +164,6 @@ prepare_camflow:
 
 config_camflow:
 	cp -f /boot/config-$(shell uname -r) ~/build/linux-stable/.config
-	cd ~/build/linux-stable && ./scripts/kconfig/streamline_config.pl > config_strip
-	cd ~/build/linux-stable &&  cp -f config_strip .config
 	cd ~/build/linux-stable && sed -i -e "s/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor\"/CONFIG_LSM=\"yama,loadpin,safesetid,integrity,selinux,smack,tomoyo,apparmor,bpf,camflow\"/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_BPF_LSM is not set/CONFIG_BPF_LSM=y/g" .config
 	cd ~/build/linux-stable && sed -i -e "s/# CONFIG_IP_ADVANCED_ROUTER is not set/CONFIG_IP_ADVANCED_ROUTER=y/g" .config
