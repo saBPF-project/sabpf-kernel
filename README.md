@@ -34,6 +34,8 @@ The patch will be located in `patches/0001-provbf.patch`
 
 ## Building kernel with CamFlow patch + bpf patch
 
+You should first [install CamFlow](https://github.com/CamFlow/camflow-install).
+
 To perform benchmarks we want to build a kernel with both this bpf and camflow patches for comparison.
 This is how to prepare, build and configure such setting:
 
