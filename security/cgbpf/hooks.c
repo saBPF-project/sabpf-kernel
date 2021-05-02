@@ -14,7 +14,6 @@
  */
 static inline int __run_progs(enum lsm_hook_type t, struct bpf_cgroup_lsm_ctx *ctx)
 {
-	return 0;
 	struct cgbpf_lsm_hook *h = &cgbpf_lsm_hooks_list[t];
 	struct bpf_prog_array_item *item;
 	struct bpf_prog_array *array;
