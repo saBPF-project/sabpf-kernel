@@ -3,7 +3,6 @@
 #ifndef _CGBPF_LSM_H
 #define _CGBPF_LSM_H
 
-#include <linux/bpf_event.h>
 #include <linux/filter.h>
 #include <linux/bpf.h>
 #include "fs.h"

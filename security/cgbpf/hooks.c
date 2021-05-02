@@ -49,7 +49,7 @@ out:
 	return IS_ENABLED(CONFIG_SECURITY_BPF_ENFORCE) ? retval : 0;
 }
 
-static int cgbpf_file_permission(struct file *file, int mask)
+static int cgbpf_lsm_file_permission(struct file *file, int mask)
 {
 	struct bpf_cgroup_lsm_ctx ctx = {
 		.file = file,
@@ -59,7 +59,7 @@ static int cgbpf_file_permission(struct file *file, int mask)
 	return __run_progs(file_permission_type, &ctx);
 }
 
-static int cgbpf_file_open(struct file *file)
+static int cgbpf_lsm_file_open(struct file *file)
 {
 	struct bpf_cgroup_lsm_ctx ctx = {
 		.file = file,
