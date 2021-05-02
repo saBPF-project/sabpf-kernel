@@ -1,4 +1,4 @@
 # SPDX-License-Identifier: GPL-2.0-only
 obj-$(CONFIG_SECURITY_CGBPF) := cgbpf.o
 
-cgbpf-y := hooks.o
+cgbpf-y := hooks.o ops.o

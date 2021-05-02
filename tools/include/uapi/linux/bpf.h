@@ -8,6 +8,7 @@
 #ifndef _UAPI__LINUX_BPF_H__
 #define _UAPI__LINUX_BPF_H__
 
+#include <linux/fs.h>
 #include <linux/types.h>
 #include <linux/bpf_common.h>
 
@@ -206,6 +207,9 @@ enum bpf_prog_type {
 	BPF_PROG_TYPE_EXT,
 	BPF_PROG_TYPE_LSM,
 	BPF_PROG_TYPE_SK_LOOKUP,
+	/* systopia contrib start */
+	BPF_PROG_TYPE_CGROUP_LSM,
+	/* systopia contrib end */
 };
 
 enum bpf_attach_type {
@@ -247,6 +251,10 @@ enum bpf_attach_type {
 	BPF_XDP_CPUMAP,
 	BPF_SK_LOOKUP,
 	BPF_XDP,
+	/* systopia contrib start */
+	BPF_CGROUP_LSM_FILEPERMISSION,
+	BPF_CGROUP_LSM_FILEOPEN,
+	/* systopia contrib end */
 	__MAX_BPF_ATTACH_TYPE
 };
 
@@ -5341,5 +5349,12 @@ enum {
 	BTF_F_PTR_RAW	=	(1ULL << 2),
 	BTF_F_ZERO	=	(1ULL << 3),
 };
+
+/* systopia contrib start */
+struct bpf_cgroup_lsm_ctx {
+	__bpf_md_ptr(struct file *, file);
+	__u32 mask;
+};
+/* systopia contrib end */
 
 #endif /* _UAPI__LINUX_BPF_H__ */
