@@ -1511,7 +1511,7 @@ int __cgroup_bpf_run_filter_lsm_filepermission(struct file *file, int mask)
 {
 	struct bpf_cgroup_lsm_ctx ctx = {
 		.file = file,
-		.mask - mask,
+		.mask = mask,
 	};
 	struct cgroup *cgrp;
 	int ret;
@@ -1572,7 +1572,7 @@ static bool cgroup_lsm_is_valid_access(int off, int size, enum bpf_access_type t
 		return false;
 
 	switch (off) {
-	case offsetof(struct bpf_cgroup_lsm_ctx, write):
+	case offsetof(struct bpf_cgroup_lsm_ctx, mask):
 		bpf_ctx_record_field_size(info, size_default);
 		return bpf_ctx_narrow_access_ok(off, size, size_default);
 	default:
