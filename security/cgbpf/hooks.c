@@ -5,15 +5,16 @@
  */
 
 #include <linux/lsm_hooks.h>
+#include <linux/bpf-cgroup.h>
 
 static int cgbpf_file_permission(struct file *file, int mask)
 {
-	return 0;
+	return BPF_CGROUP_RUN_PROG_LSM_FILEPERMISSION(file, mask);
 }
 
 static int cgbpf_file_open(struct file *file)
 {
-	return 0;
+	return BPF_CGROUP_RUN_PROG_LSM_FILEOPEN(file);
 }
 
 /*!
