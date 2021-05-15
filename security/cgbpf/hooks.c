@@ -17,12 +17,24 @@ static int cgbpf_file_open(struct file *file)
 	return BPF_CGROUP_RUN_PROG_LSM_FILEOPEN(file);
 }
 
+static int cgbpf_file_alloc_security(struct file *file)
+{
+	return BPF_CGROUP_RUN_PROG_LSM_FILEALLOC(file);
+}
+
+static void cgbpf_file_free_security(struct file *file)
+{
+	BPF_CGROUP_RUN_PROG_LSM_FILEFREE(file);
+}
+
 /*!
  * @brief Add provenance hooks to security_hook_list.
  */
 static struct security_hook_list cgbpf_hooks[] __lsm_ro_after_init = {
 	LSM_HOOK_INIT(file_permission,          cgbpf_file_permission),
 	LSM_HOOK_INIT(file_open,                cgbpf_file_open),
+	LSM_HOOK_INIT(file_alloc_security,      cgbpf_file_alloc_security),
+	LSM_HOOK_INIT(file_free_security,       cgbpf_file_free_security),
 };
 
 static int __init cgbpf_init(void)

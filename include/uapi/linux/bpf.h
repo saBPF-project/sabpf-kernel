@@ -254,6 +254,8 @@ enum bpf_attach_type {
 	/* systopia contrib start */
 	BPF_CGROUP_LSM_FILEPERMISSION,
 	BPF_CGROUP_LSM_FILEOPEN,
+	BPF_CGROUP_LSM_FILEALLOC,
+	BPF_CGROUP_LSM_FILEFREE,
 	/* systopia contrib end */
 	__MAX_BPF_ATTACH_TYPE
 };

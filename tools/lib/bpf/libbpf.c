@@ -8620,6 +8620,10 @@ static const struct bpf_sec_def section_defs[] = {
 						BPF_CGROUP_LSM_FILEPERMISSION),
 	BPF_EAPROG_SEC("cgroup_lsm/fileopen",	BPF_PROG_TYPE_CGROUP_LSM,
 						BPF_CGROUP_LSM_FILEOPEN),
+	BPF_EAPROG_SEC("cgroup_lsm/filealloc",	BPF_PROG_TYPE_CGROUP_LSM,
+						BPF_CGROUP_LSM_FILEALLOC),
+	BPF_EAPROG_SEC("cgroup_lsm/filefree",	BPF_PROG_TYPE_CGROUP_LSM,
+						BPF_CGROUP_LSM_FILEFREE),
 	/* systopia contrib end */
 };
 

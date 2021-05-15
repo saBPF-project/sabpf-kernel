@@ -151,6 +151,8 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
 /* systopia contrib start */
 int __cgroup_bpf_run_filter_lsm_filepermission(struct file *file, int mask);
 int __cgroup_bpf_run_filter_lsm_fileopen(struct file *file);
+int __cgroup_bpf_run_filter_lsm_filealloc(struct file *file);
+int __cgroup_bpf_run_filter_lsm_filefree(struct file *file);
 /* systopia contrib end */				       
 
 
@@ -394,6 +396,22 @@ int bpf_percpu_cgroup_storage_update(struct bpf_map *map, void *key,
 		__ret = __cgroup_bpf_run_filter_lsm_fileopen(file); 	       \
 	__ret;								       \
 })
+
+#define BPF_CGROUP_RUN_PROG_LSM_FILEALLOC(file)				       \
+({									       \
+	int __ret = 0;							       \
+	if (cgroup_bpf_enabled)						       \
+		__ret = __cgroup_bpf_run_filter_lsm_filealloc(file); 	       \
+	__ret;								       \
+})
+
+#define BPF_CGROUP_RUN_PROG_LSM_FILEFREE(file)				       \
+({									       \
+	int __ret = 0;							       \
+	if (cgroup_bpf_enabled)						       \
+		__ret = __cgroup_bpf_run_filter_lsm_filefree(file); 	       \
+	__ret;								       \
+})
 /* systopia contrib end */
 
 int cgroup_bpf_prog_attach(const union bpf_attr *attr,
@@ -482,6 +500,8 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
 /* systopia contrib start */
 #define BPF_CGROUP_RUN_PROG_LSM_FILEPERMISSION(file, mask) ({ 0; })
 #define BPF_CGROUP_RUN_PROG_LSM_FILEOPEN(file) ({ 0; })
+#define BPF_CGROUP_RUN_PROG_LSM_FILEALLOC(file) ({ 0; })
+#define BPF_CGROUP_RUN_PROG_LSM_FILEFREE(file) ({ 0; })
 /* systopia contrib end */
 
 #define for_each_cgroup_storage_type(stype) for (; false; )

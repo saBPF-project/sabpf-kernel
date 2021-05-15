@@ -1555,6 +1555,60 @@ int __cgroup_bpf_run_filter_lsm_fileopen(struct file *file)
 }
 EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_fileopen);
 
+/**
+ * __cgroup_bpf_run_filter_lsm_filealloc - Run a program on LSM file_alloc_security hook
+ *
+ * @file: the file structure being accessed
+ *
+ * Program is run when the file_alloc_security hook is triggered.
+ *
+ * This function will return %-EPERM if an attached program is found but
+ * returned value != 1 during execution. In all other cases 0 is returned.
+ */
+int __cgroup_bpf_run_filter_lsm_filealloc(struct file *file)
+{
+	struct bpf_cgroup_lsm_ctx ctx = {
+		.file = file,
+	};
+	struct cgroup *cgrp;
+	int ret;
+
+	rcu_read_lock();
+	cgrp = task_dfl_cgroup(current);
+	ret = BPF_PROG_RUN_ARRAY(cgrp->bpf.effective[BPF_CGROUP_LSM_FILEALLOC], &ctx, BPF_PROG_RUN);
+	rcu_read_unlock();
+
+	return ret == 1 ? 0 : -EPERM;
+}
+EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_filealloc);
+
+/**
+ * __cgroup_bpf_run_filter_lsm_filefree - Run a program on LSM file_free_security hook
+ *
+ * @file: the file structure being accessed
+ *
+ * Program is run when the file_free_security hook is triggered.
+ *
+ * This function will return %-EPERM if an attached program is found but
+ * returned value != 1 during execution. In all other cases 0 is returned.
+ */
+int __cgroup_bpf_run_filter_lsm_filefree(struct file *file)
+{
+	struct bpf_cgroup_lsm_ctx ctx = {
+		.file = file,
+	};
+	struct cgroup *cgrp;
+	int ret;
+
+	rcu_read_lock();
+	cgrp = task_dfl_cgroup(current);
+	ret = BPF_PROG_RUN_ARRAY(cgrp->bpf.effective[BPF_CGROUP_LSM_FILEFREE], &ctx, BPF_PROG_RUN);
+	rcu_read_unlock();
+
+	return ret == 1 ? 0 : -EPERM;
+}
+EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_filefree);
+
 static const struct bpf_func_proto *
 cgroup_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 {
@@ -1571,13 +1625,15 @@ static bool cgroup_lsm_is_valid_access(int off, int size, enum bpf_access_type t
 	    off % size)
 		return false;
 
-	switch (off) {
+	// TODO: Understand and implement
+	/*switch (off) {
 	case offsetof(struct bpf_cgroup_lsm_ctx, mask):
 		bpf_ctx_record_field_size(info, size_default);
 		return bpf_ctx_narrow_access_ok(off, size, size_default);
 	default:
 		return false;
-	}
+	}*/
+	return true;
 }
 
 const struct bpf_prog_ops cgroup_lsm_prog_ops = {
