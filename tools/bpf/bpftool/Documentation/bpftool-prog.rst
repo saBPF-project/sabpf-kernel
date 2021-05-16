@@ -46,7 +46,8 @@ PROG COMMANDS
 |		**cgroup/recvmsg4** | **cgroup/recvmsg6** | **cgroup/sysctl** |
 |		**cgroup/getsockopt** | **cgroup/setsockopt** |
 |		**struct_ops** | **fentry** | **fexit** | **freplace** | **sk_lookup** |
-|		**cgroup_lsm/filepermission** | **cgroup_lsm/fileopen**
+|		**cgroup_lsm/filepermission** | **cgroup_lsm/fileopen** | **cgroup_lsm/filealloc** |
+		**cgroup_lsm/filefree**
 |	}
 |       *ATTACH_TYPE* := {
 |		**msg_verdict** | **stream_verdict** | **stream_parser** | **flow_dissector**

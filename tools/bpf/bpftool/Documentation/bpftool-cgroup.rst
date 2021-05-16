@@ -31,7 +31,7 @@ CGROUP COMMANDS
 |		**bind4** | **bind6** | **post_bind4** | **post_bind6** | **connect4** | **connect6** |
 |               **getpeername4** | **getpeername6** | **getsockname4** | **getsockname6** | **sendmsg4** |
 |               **sendmsg6** | **recvmsg4** | **recvmsg6** | **sysctl** | **getsockopt** | **setsockopt** |
-|		**lsm_filepermission** | **lsm_fileopen** }
+|		**lsm_filepermission** | **lsm_fileopen** | **lsm_filealloc** | **lsm_filefree**}
 |	*ATTACH_FLAGS* := { **multi** | **override** }
 
 DESCRIPTION
@@ -109,6 +109,8 @@ DESCRIPTION
 		  **getsockname6** call to getsockname(2) for an inet6 socket (since 5.8);
 		  **lsm_filepermission** LSM file_permission hook (cgBPF prototype);
 		  **lsm_fileopen** LSM file_open hook (cgBPF prototype).
+		  **lsm_filealloc** LSM file_alloc_security hook (cgBPF prototype).
+		  **lsm_filefree** LSM file_free_security hook (cgBPF prototype).
 
 	**bpftool cgroup detach** *CGROUP* *ATTACH_TYPE* *PROG*
 		  Detach *PROG* from the cgroup *CGROUP* and attach type

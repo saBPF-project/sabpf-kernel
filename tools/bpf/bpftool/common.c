@@ -56,6 +56,8 @@ const char * const attach_type_name[__MAX_BPF_ATTACH_TYPE] = {
 	[BPF_CGROUP_SETSOCKOPT]		= "setsockopt",
 	[BPF_CGROUP_LSM_FILEPERMISSION]  = "lsm_filepermission",
 	[BPF_CGROUP_LSM_FILEOPEN]	= "lsm_fileopen",
+	[BPF_CGROUP_LSM_FILEALLOC]	= "lsm_filealloc",
+	[BPF_CGROUP_LSM_FILEFREE]	= "lsm_filefree",
 
 	[BPF_SK_SKB_STREAM_PARSER]	= "sk_skb_stream_parser",
 	[BPF_SK_SKB_STREAM_VERDICT]	= "sk_skb_stream_verdict",
