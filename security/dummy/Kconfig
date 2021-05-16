@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config SECURITY_DUMMY
+	bool "dummy LSM that does nothing but return 0"
+	depends on SECURITY
+	default y
+	help
+	  This for evaluation purposes only.
+
+	  If you are unsure how to answer this question, answer N.
