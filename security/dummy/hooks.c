@@ -38,7 +38,7 @@ static struct security_hook_list dummy_hooks[] __lsm_ro_after_init = {
 
 static int __init dummy_init(void)
 {
-	pr_info("dummy LSM: running.\n");
+	pr_info("dummyLSM: running.\n");
 	security_add_hooks(dummy_hooks, ARRAY_SIZE(dummy_hooks), "dummy");
 	return 0;
 }
