@@ -8624,6 +8624,14 @@ static const struct bpf_sec_def section_defs[] = {
 						BPF_CGROUP_LSM_FILEALLOC),
 	BPF_EAPROG_SEC("cgroup_lsm/filefree",	BPF_PROG_TYPE_CGROUP_LSM,
 						BPF_CGROUP_LSM_FILEFREE),
+	BPF_EAPROG_SEC("cgroup_lsm/socketcreate",	BPF_PROG_TYPE_CGROUP_LSM,
+							BPF_CGROUP_LSM_SOCKETCREATE),
+	BPF_EAPROG_SEC("cgroup_lsm/socketbind",		BPF_PROG_TYPE_CGROUP_LSM,
+							BPF_CGROUP_LSM_SOCKETBIND),
+	BPF_EAPROG_SEC("cgroup_lsm/socketlisten",	BPF_PROG_TYPE_CGROUP_LSM,
+							BPF_CGROUP_LSM_SOCKETLISTEN),
+	BPF_EAPROG_SEC("cgroup_lsm/socketaccept",	BPF_PROG_TYPE_CGROUP_LSM,
+							BPF_CGROUP_LSM_SOCKETACCEPT),
 	/* systopia contrib end */
 };
 

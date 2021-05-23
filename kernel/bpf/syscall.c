@@ -2011,6 +2011,10 @@ bpf_prog_load_check_attach(enum bpf_prog_type prog_type,
 		case BPF_CGROUP_LSM_FILEOPEN:
 		case BPF_CGROUP_LSM_FILEALLOC:
 		case BPF_CGROUP_LSM_FILEFREE:
+		case BPF_CGROUP_LSM_SOCKETCREATE:
+		case BPF_CGROUP_LSM_SOCKETBIND:
+		case BPF_CGROUP_LSM_SOCKETLISTEN:
+		case BPF_CGROUP_LSM_SOCKETACCEPT:
 			return 0;
 		default:
 			return -EINVAL;
@@ -2981,6 +2985,10 @@ attach_type_to_prog_type(enum bpf_attach_type attach_type)
 	case BPF_CGROUP_LSM_FILEOPEN:
 	case BPF_CGROUP_LSM_FILEALLOC:
 	case BPF_CGROUP_LSM_FILEFREE:
+	case BPF_CGROUP_LSM_SOCKETCREATE:
+	case BPF_CGROUP_LSM_SOCKETBIND:
+	case BPF_CGROUP_LSM_SOCKETLISTEN:
+	case BPF_CGROUP_LSM_SOCKETACCEPT:
 		return BPF_PROG_TYPE_CGROUP_LSM;
 	/* systopia contrib end */
 	default:
@@ -3126,6 +3134,10 @@ static int bpf_prog_query(const union bpf_attr *attr,
 	case BPF_CGROUP_LSM_FILEOPEN:
 	case BPF_CGROUP_LSM_FILEALLOC:
 	case BPF_CGROUP_LSM_FILEFREE:
+	case BPF_CGROUP_LSM_SOCKETCREATE:
+	case BPF_CGROUP_LSM_SOCKETBIND:
+	case BPF_CGROUP_LSM_SOCKETLISTEN:
+	case BPF_CGROUP_LSM_SOCKETACCEPT:
 	/* systopia contrib end */
 		return cgroup_bpf_prog_query(attr, uattr);
 	case BPF_LIRC_MODE2:

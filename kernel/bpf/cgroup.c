@@ -1609,6 +1609,128 @@ int __cgroup_bpf_run_filter_lsm_filefree(struct file *file)
 }
 EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_filefree);
 
+/**
+ * __cgroup_bpf_run_filter_lsm_socketcreate - Run a program on LSM socket_create hook
+ *
+ * @family: the requested protocol family.
+ * @type: the requested communications type.
+ * @protocol: the requested protocol.
+ * @kern: set to 1 if a kernel socket.
+ *
+ * Program is run when the socket_create hook is triggered.
+ *
+ * This function will return %-EPERM if an attached program is found but
+ * returned value != 1 during execution. In all other cases 0 is returned.
+ */
+int __cgroup_bpf_run_filter_lsm_socketcreate(int family, int type, int protocol, int kern)
+{
+	struct bpf_cgroup_lsm_ctx ctx = {
+		.family = family,
+		.type = type,
+		.protocol = protocol,
+		.kern = kern,
+	};
+	struct cgroup *cgrp;
+	int ret;
+
+	rcu_read_lock();
+	cgrp = task_dfl_cgroup(current);
+	ret = BPF_PROG_RUN_ARRAY(cgrp->bpf.effective[BPF_CGROUP_LSM_SOCKETCREATE], &ctx, BPF_PROG_RUN);
+	rcu_read_unlock();
+
+	return ret == 1 ? 0 : -EPERM;
+}
+EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_socketcreate);
+
+/**
+ * __cgroup_bpf_run_filter_lsm_socketbind - Run a program on LSM socket_bind hook
+ *
+ * @sock: the socket structure.
+ * @address: the address to bind to.
+ * @addrlen: the length of address.
+ *
+ * Program is run when the socket_bind hook is triggered.
+ *
+ * This function will return %-EPERM if an attached program is found but
+ * returned value != 1 during execution. In all other cases 0 is returned.
+ */
+int __cgroup_bpf_run_filter_lsm_socketbind(struct socket *sock, struct sockaddr *address, int addrlen)
+{
+	struct bpf_cgroup_lsm_ctx ctx = {
+		.sock = sock,
+		.address = address,
+		.addrlen = addrlen,
+	};
+	struct cgroup *cgrp;
+	int ret;
+
+	rcu_read_lock();
+	cgrp = task_dfl_cgroup(current);
+	ret = BPF_PROG_RUN_ARRAY(cgrp->bpf.effective[BPF_CGROUP_LSM_SOCKETBIND], &ctx, BPF_PROG_RUN);
+	rcu_read_unlock();
+
+	return ret == 1 ? 0 : -EPERM;
+}
+EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_socketbind);
+
+/**
+ * __cgroup_bpf_run_filter_lsm_socketlisten - Run a program on LSM socket_listen hook
+ *
+ * @sock: the socket structure.
+ * @backlog: the maximum length for the pending connection queue.
+ *
+ * Program is run when the socket_listen hook is triggered.
+ *
+ * This function will return %-EPERM if an attached program is found but
+ * returned value != 1 during execution. In all other cases 0 is returned.
+ */
+int __cgroup_bpf_run_filter_lsm_socketlisten(struct socket *sock, int backlog)
+{
+	struct bpf_cgroup_lsm_ctx ctx = {
+		.sock = sock,
+		.backlog = backlog,
+	};
+	struct cgroup *cgrp;
+	int ret;
+
+	rcu_read_lock();
+	cgrp = task_dfl_cgroup(current);
+	ret = BPF_PROG_RUN_ARRAY(cgrp->bpf.effective[BPF_CGROUP_LSM_SOCKETLISTEN], &ctx, BPF_PROG_RUN);
+	rcu_read_unlock();
+
+	return ret == 1 ? 0 : -EPERM;
+}
+EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_socketlisten);
+
+/**
+ * __cgroup_bpf_run_filter_lsm_socketaccept - Run a program on LSM socket_accept hook
+ *
+ * @sock: the listening socket structure.
+ * @newsock: the newly created server socket for connection.
+ *
+ * Program is run when the socket_accept hook is triggered.
+ *
+ * This function will return %-EPERM if an attached program is found but
+ * returned value != 1 during execution. In all other cases 0 is returned.
+ */
+int __cgroup_bpf_run_filter_lsm_socketaccept(struct socket *sock, struct socket *newsock)
+{
+	struct bpf_cgroup_lsm_ctx ctx = {
+		.sock = sock,
+		.newsock = newsock,
+	};
+	struct cgroup *cgrp;
+	int ret;
+
+	rcu_read_lock();
+	cgrp = task_dfl_cgroup(current);
+	ret = BPF_PROG_RUN_ARRAY(cgrp->bpf.effective[BPF_CGROUP_LSM_SOCKETACCEPT], &ctx, BPF_PROG_RUN);
+	rcu_read_unlock();
+
+	return ret == 1 ? 0 : -EPERM;
+}
+EXPORT_SYMBOL(__cgroup_bpf_run_filter_lsm_socketaccept);
+
 static const struct bpf_func_proto *
 cgroup_lsm_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 {

@@ -153,6 +153,10 @@ int __cgroup_bpf_run_filter_lsm_filepermission(struct file *file, int mask);
 int __cgroup_bpf_run_filter_lsm_fileopen(struct file *file);
 int __cgroup_bpf_run_filter_lsm_filealloc(struct file *file);
 int __cgroup_bpf_run_filter_lsm_filefree(struct file *file);
+int __cgroup_bpf_run_filter_lsm_socketcreate(int family, int type, int protocol, int kern);
+int __cgroup_bpf_run_filter_lsm_socketbind(struct socket *sock, struct sockaddr *address, int addrlen);
+int __cgroup_bpf_run_filter_lsm_socketlisten(struct socket *sock, int backlog);
+int __cgroup_bpf_run_filter_lsm_socketaccept(struct socket *sock, struct socket *newsock);
 /* systopia contrib end */				       
 
 
@@ -412,6 +416,38 @@ int bpf_percpu_cgroup_storage_update(struct bpf_map *map, void *key,
 		__ret = __cgroup_bpf_run_filter_lsm_filefree(file); 	       \
 	__ret;								       \
 })
+
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETCREATE(family, type, protocol, kern)			        \
+({									       				\
+	int __ret = 0;							       				\
+	if (cgroup_bpf_enabled)						       				\
+		__ret = __cgroup_bpf_run_filter_lsm_socketcreate(family, type, protocol, kern);         \
+	__ret;								       				\
+})
+
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETBIND(sock, address, addrlen)				        \
+({									       				\
+	int __ret = 0;							       				\
+	if (cgroup_bpf_enabled)						       				\
+		__ret = __cgroup_bpf_run_filter_lsm_socketbind(sock, address, addrlen); 	       	\
+	__ret;								       				\
+})
+
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETLISTEN(sock, backlog)				       		\
+({									       				\
+	int __ret = 0;							       				\
+	if (cgroup_bpf_enabled)						       				\
+		__ret = __cgroup_bpf_run_filter_lsm_socketlisten(sock, backlog); 	       		\
+	__ret;								       				\
+})
+
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETACCEPT(sock, newsock)				       		\
+({									       				\
+	int __ret = 0;							       				\
+	if (cgroup_bpf_enabled)						       				\
+		__ret = __cgroup_bpf_run_filter_lsm_socketaccept(sock, newsock); 	       		\
+	__ret;								       				\
+})
 /* systopia contrib end */
 
 int cgroup_bpf_prog_attach(const union bpf_attr *attr,
@@ -502,6 +538,10 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
 #define BPF_CGROUP_RUN_PROG_LSM_FILEOPEN(file) ({ 0; })
 #define BPF_CGROUP_RUN_PROG_LSM_FILEALLOC(file) ({ 0; })
 #define BPF_CGROUP_RUN_PROG_LSM_FILEFREE(file) ({ 0; })
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETCREATE(family, type, protocol, kern) ({ 0; })
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETBIND(sock, address, addrlen) ({ 0; })
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETLISTEN(sock, backlog) ({ 0; })
+#define BPF_CGROUP_RUN_PROG_LSM_SOCKETACCEPT(sock, newsock) ({ 0; })
 /* systopia contrib end */
 
 #define for_each_cgroup_storage_type(stype) for (; false; )
