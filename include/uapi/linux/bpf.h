@@ -9,6 +9,7 @@
 #define _UAPI__LINUX_BPF_H__
 
 #include <linux/fs.h>
+#include <linux/socket.h>
 #include <linux/types.h>
 #include <linux/bpf_common.h>
 
@@ -5355,8 +5356,19 @@ enum {
 
 /* systopia contrib start */
 struct bpf_cgroup_lsm_ctx {
+	// file
 	__bpf_md_ptr(struct file *, file);
 	__u32 mask;
+	// socket
+	__u32 family;
+	__u32 type;
+	__u32 protocol;
+	__u32 kern;
+	__u32 addrlen;
+	__u32 backlog;
+	__bpf_md_ptr(struct socket *, sock);
+	__bpf_md_ptr(struct socket *, newsock);
+	__bpf_md_ptr(struct sockaddr *, address);
 };
 /* systopia contrib end */
 
