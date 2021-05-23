@@ -58,6 +58,10 @@ const char * const attach_type_name[__MAX_BPF_ATTACH_TYPE] = {
 	[BPF_CGROUP_LSM_FILEOPEN]	= "lsm_fileopen",
 	[BPF_CGROUP_LSM_FILEALLOC]	= "lsm_filealloc",
 	[BPF_CGROUP_LSM_FILEFREE]	= "lsm_filefree",
+	[BPF_CGROUP_LSM_SOCKETCREATE]	= "lsm_socketcreate",
+	[BPF_CGROUP_LSM_SOCKETBIND]	= "lsm_socketbind",
+	[BPF_CGROUP_LSM_SOCKETLISTEN]	= "lsm_socketlisten",
+	[BPF_CGROUP_LSM_SOCKETACCEPT]	= "lsm_socketaccept",
 
 	[BPF_SK_SKB_STREAM_PARSER]	= "sk_skb_stream_parser",
 	[BPF_SK_SKB_STREAM_VERDICT]	= "sk_skb_stream_verdict",

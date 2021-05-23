@@ -482,7 +482,9 @@ _bpftool()
                                 fentry fexit freplace sk_lookup \
                                 cgroup_lsm/filepermission \
                                 cgroup_lsm/fileopen cgroup_lsm/filealloc \
-                                cgroup_lsm/filefree" -- \
+                                cgroup_lsm/filefree cgroup_lsm/socketcreate \
+                                cgroup_lsm/socketbind cgroup_lsm/socketlisten \
+                                cgroup_lsm/socketaccept" -- \
                                                    "$cur" ) )
                             return 0
                             ;;
@@ -1014,7 +1016,8 @@ _bpftool()
                         getpeername4 getpeername6 getsockname4 getsockname6 \
                         sendmsg4 sendmsg6 recvmsg4 recvmsg6 sysctl getsockopt \
                         setsockopt lsm_filepermission lsm_fileopen lsm_filealloc \
-                        lsm_filefree'
+                        lsm_filefree lsm_socketcreate lsm_socketbind lsm_socketlisten \
+                        lsm_socketaccept'
                     local ATTACH_FLAGS='multi override'
                     local PROG_TYPE='id pinned tag name'
                     case $prev in
@@ -1026,7 +1029,8 @@ _bpftool()
                         post_bind4|post_bind6|connect4|connect6|getpeername4|\
                         getpeername6|getsockname4|getsockname6|sendmsg4|sendmsg6|\
                         recvmsg4|recvmsg6|sysctl|getsockopt|setsockopt|\
-                        lsm_filepermission|lsm_fileopen|lsm_filealloc|lsm_filefree)
+                        lsm_filepermission|lsm_fileopen|lsm_filealloc|lsm_filefree|\
+                        lsm_socketcreate|lsm_socketbind|lsm_socketlisten|lsm_socketaccept)
                             COMPREPLY=( $( compgen -W "$PROG_TYPE" -- \
                                 "$cur" ) )
                             return 0

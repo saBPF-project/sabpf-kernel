@@ -47,7 +47,8 @@ PROG COMMANDS
 |		**cgroup/getsockopt** | **cgroup/setsockopt** |
 |		**struct_ops** | **fentry** | **fexit** | **freplace** | **sk_lookup** |
 |		**cgroup_lsm/filepermission** | **cgroup_lsm/fileopen** | **cgroup_lsm/filealloc** |
-		**cgroup_lsm/filefree**
+|		**cgroup_lsm/filefree** | **cgroup_lsm/socketcreate** | **cgroup_lsm/socketbind** |
+|		**cgroup_lsm/socketlisten** | **cgroup_lsm/socketaccept**		
 |	}
 |       *ATTACH_TYPE* := {
 |		**msg_verdict** | **stream_verdict** | **stream_parser** | **flow_dissector**

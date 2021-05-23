@@ -31,7 +31,8 @@ CGROUP COMMANDS
 |		**bind4** | **bind6** | **post_bind4** | **post_bind6** | **connect4** | **connect6** |
 |               **getpeername4** | **getpeername6** | **getsockname4** | **getsockname6** | **sendmsg4** |
 |               **sendmsg6** | **recvmsg4** | **recvmsg6** | **sysctl** | **getsockopt** | **setsockopt** |
-|		**lsm_filepermission** | **lsm_fileopen** | **lsm_filealloc** | **lsm_filefree**}
+|		**lsm_filepermission** | **lsm_fileopen** | **lsm_filealloc** | **lsm_filefree** |
+|		**lsm_socketcreate** | **lsm_socketbind** | **lsm_socketlisten** | **lsm_socketaccept**}
 |	*ATTACH_FLAGS* := { **multi** | **override** }
 
 DESCRIPTION
@@ -111,7 +112,11 @@ DESCRIPTION
 		  **lsm_fileopen** LSM file_open hook (cgBPF prototype).
 		  **lsm_filealloc** LSM file_alloc_security hook (cgBPF prototype).
 		  **lsm_filefree** LSM file_free_security hook (cgBPF prototype).
-
+		  **lsm_socketcreate** LSM socket_create hook (cgBPF prototype).
+		  **lsm_socketbind** LSM socket_bind hook (cgBPF prototype).
+		  **lsm_socketlisten** LSM socket_listen hook (cgBPF prototype).
+		  **lsm_socketaccept** LSM socket_accept hook (cgBPF prototype).
+		  
 	**bpftool cgroup detach** *CGROUP* *ATTACH_TYPE* *PROG*
 		  Detach *PROG* from the cgroup *CGROUP* and attach type
 		  *ATTACH_TYPE*.

@@ -28,9 +28,11 @@
 	"                        connect6 | getpeername4 | getpeername6 |\n"   \
 	"                        getsockname4 | getsockname6 | sendmsg4 |\n"   \
 	"                        sendmsg6 | recvmsg4 | recvmsg6 |\n"           \
-	"                        sysctl | getsockopt | setsockopt |\n"	      \
-	"			lsm_filepermission | lsm_fileopen |\n"	      \
-	"			lsm_filealloc | lsm_filefree }"
+	"                        sysctl | getsockopt | setsockopt |\n"	       \
+	"			lsm_filepermission | lsm_fileopen |\n"	       \
+	"			lsm_filealloc | lsm_filefree |\n"	       \
+	"			lsm_socketcreate | lsm_socketbind |\n"	       \
+	"			lsm_socketlisten | lsm_socketaccept }"
 
 static unsigned int query_flags;
 
