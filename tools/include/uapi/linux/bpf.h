@@ -5359,10 +5359,8 @@ enum {
 
 /* systopia contrib start */
 struct bpf_cgroup_lsm_ctx {
-	// file
 	__bpf_md_ptr(struct file *, file);
 	__u32 mask;
-	// socket
 	__u32 family;
 	__u32 type;
 	__u32 protocol;
