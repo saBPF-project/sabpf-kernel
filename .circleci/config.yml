@@ -94,6 +94,7 @@ jobs:
           at: ~/build
       - run: 'sudo dnf install -y make wget rsync'
       - run: 'sudo dnf install -y fedpkg fedora-packager rpmdevtools ncurses-devel pesign grubby'
+      - run: 'cd patches && cat 0001-provbpf.patch'
       - run:
           command: 'make fedora'
           no_output_timeout: '60m'
