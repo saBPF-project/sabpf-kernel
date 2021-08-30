@@ -69,8 +69,6 @@ jobs:
     working_directory: ~/build
     steps:
         - checkout
-        - attach_workspace:
-            at: ~/build
         - run: 'apt-get update -qq --allow-releaseinfo-change'
         - run: 'apt-get install -y sudo rpm cpio'
         - run: 'apt-get install -y build-essential rsync libtool libncurses5-dev'
@@ -78,7 +76,9 @@ jobs:
         - run: 'apt-get install -y bison flex'
         - run: 'git config --global user.name "Soo Yee Lim"'
         - run: 'git config --global user.email "sooyee.lim@bristol.ac.uk"'
+        - run: 'make prepare'
         - run: 'make patch'
+        - run: 'cd patches && cat 0001-provbpf.patch'
         - persist_to_workspace:
             root: ~/build
             paths:
