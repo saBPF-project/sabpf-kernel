@@ -59,7 +59,7 @@ jobs:
         - run: 'apt-get install -y libncursesw5-dev bc pkg-config zsh libelf-dev'
         - run: 'apt-get install -y bison flex'
         - run: 'git config --global user.name "Soo Yee Lim"'
-        - run: 'git config --global user.email "sooyee.lim@bristol.ac.uk"'
+        - run: 'git config --global user.email "sooyee@cs.ubc.ca"'
         - run: 'make prepare_camflow'
         - run: 'make config_circle_camflow'
         - run: 'make build'
@@ -75,7 +75,7 @@ jobs:
         - run: 'apt-get install -y libncursesw5-dev bc pkg-config zsh libelf-dev'
         - run: 'apt-get install -y bison flex'
         - run: 'git config --global user.name "Soo Yee Lim"'
-        - run: 'git config --global user.email "sooyee.lim@bristol.ac.uk"'
+        - run: 'git config --global user.email "sooyee@cs.ubc.ca"'
         - run: 'make prepare'
         - run: 'make patch'
         - run: 'cd patches && cat 0001-provbpf.patch'
@@ -114,6 +114,7 @@ workflows:
         - patch:
             requires:
                 - compile
+                - compile_camflow
         - fedora_x86:
             requires:
                 - patch
