@@ -147,6 +147,7 @@ patch: copy_change
 
 fedora:
 	mkdir -p ~/build
+	cd ~/build && rm -rf kernel
 	cd ~/build && fedpkg clone -a kernel
 	cd ~/build/kernel && git checkout -b camflow origin/f$(fedora-version)
 	cd ~/build/kernel && sudo dnf -y builddep kernel.spec
