@@ -113,8 +113,7 @@ workflows:
                 - checkout
         - patch:
             requires:
-                - checkout
+                - compile
         - fedora_x86:
             requires:
                 - patch
-                - compile
