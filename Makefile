@@ -1,6 +1,7 @@
 kernel-version=5.11.2
 provbpf-version=0.1.0
 camflow-version=0.7.2
+fedora-version=33
 arch=x86_64
 
 prepare:
@@ -143,6 +144,25 @@ patch: copy_change
 	cd ~/build/pristine/linux-stable && git commit -a -m 'provbpf'
 	cd ~/build/pristine/linux-stable && git format-patch HEAD~ -s
 	cp -f ~/build/pristine/linux-stable/*.patch patches/
+
+fedora:
+	mkdir -p ~/build
+	cd ~/build && fedpkg clone -a kernel
+	cd ~/build/kernel && git checkout -b camflow origin/f$(fedora-version)
+	cd ~/build/kernel && sudo dnf -y builddep kernel.spec
+	cp -f patches/*.patch ~/build/kernel
+	bash ./scripts/add_patch.sh
+	cd ~/build/kernel && sed -i -e "s/# define buildid .local/%define buildid .provbpf/g" kernel.spec
+	cd ~/build/kernel && sed -i -e "s/%define with_headers 0/%define with_headers 1/g" kernel.spec
+	cd ~/build/kernel && sed -i -e "s/%define with_cross_headers 0/%define with_cross_headers 1/g" kernel.spec
+	bash ./scripts/prep_config.sh
+	bash ./scripts/release.sh
+	cd ~/build/kernel && fedpkg prep
+	cd ~/build/kernel && fedpkg local
+	mkdir -p output
+	mv -f ~/build/kernel/x86_64/*.rpm ./output
+	mv -f ~/build/kernel/*.rpm ./output
+	cd output && ls
 
 apply_camflow:
 	cd ~/build && wget https://github.com/camflow/camflow-dev/releases/download/v$(camflow-version)/0001-information-flow.patch
