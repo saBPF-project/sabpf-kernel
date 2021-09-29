@@ -32,7 +32,7 @@ make patch
 
 The patch will be located in `patches/0001-provbf.patch`
 
-## Building kernel with CamFlow patch + bpf patch
+## Building kernel with CamFlow patch + saBPF patch
 
 You should first [install CamFlow](https://github.com/CamFlow/camflow-install).
 
