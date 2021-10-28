@@ -76,6 +76,12 @@ BPF_PROG_TYPE(BPF_PROG_TYPE_EXT, bpf_extension,
 BPF_PROG_TYPE(BPF_PROG_TYPE_LSM, lsm,
 	       void *, void *)
 #endif /* CONFIG_BPF_LSM */
+/* systopia contrib start */
+#ifdef CONFIG_SECURITY_CGBPF
+BPF_PROG_TYPE(BPF_PROG_TYPE_CGROUP_LSM, cgroup_lsm,
+	      struct bpf_cgroup_lsm_ctx, struct bpf_cgroup_lsm_ctx)
+#endif
+/* systopia contrib end */
 #endif
 
 BPF_MAP_TYPE(BPF_MAP_TYPE_ARRAY, array_map_ops)
