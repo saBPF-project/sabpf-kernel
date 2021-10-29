@@ -11,7 +11,7 @@
  * function where a BPF program can be attached, and call the cgroup handler.
  */
 #define LSM_HOOK(RET, DEFAULT, NAME, ...)	\
-noinline RET bpf_lsm_##NAME(__VA_ARGS__)	\
+noinline RET cgbpf_##NAME(__VA_ARGS__)	\
 {						\
 	if (cgroup_bpf_enabled)						       \
 		__cgroup_bpf_run_filter_lsm_##NAME(__VA_ARGS__); \
