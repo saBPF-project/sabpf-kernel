@@ -252,7 +252,10 @@ enum bpf_attach_type {
 	BPF_SK_LOOKUP,
 	BPF_XDP,
 	/* systopia contrib start */
-	BPF_CGROUP_LSM,
+	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+	BPF_CGROUP_LSM_##NAME,
+	#include <linux/lsm_hook_defs.h>
+	#undef LSM_HOOK
 	/* systopia contrib end */
 	__MAX_BPF_ATTACH_TYPE
 };

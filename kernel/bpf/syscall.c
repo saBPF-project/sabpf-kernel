@@ -2007,7 +2007,10 @@ bpf_prog_load_check_attach(enum bpf_prog_type prog_type,
 	/* systopia contrib start */
 	case BPF_PROG_TYPE_CGROUP_LSM:
 		switch (expected_attach_type) {
-		case BPF_CGROUP_LSM:
+		#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+		case BPF_CGROUP_LSM_##NAME:
+		#include <linux/lsm_hook_defs.h>
+		#undef LSM_HOOK
 			return 0;
 		default:
 			return -EINVAL;
@@ -2974,7 +2977,10 @@ attach_type_to_prog_type(enum bpf_attach_type attach_type)
 	case BPF_XDP:
 		return BPF_PROG_TYPE_XDP;
 	/* systopia contrib start */
-	case BPF_CGROUP_LSM:
+	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+	case BPF_CGROUP_LSM_##NAME:
+	#include <linux/lsm_hook_defs.h>
+	#undef LSM_HOOK
 		return BPF_PROG_TYPE_CGROUP_LSM;
 	/* systopia contrib end */
 	default:
@@ -3116,7 +3122,10 @@ static int bpf_prog_query(const union bpf_attr *attr,
 	case BPF_CGROUP_GETSOCKOPT:
 	case BPF_CGROUP_SETSOCKOPT:
 	/* systopia contrib start */
-	case BPF_CGROUP_LSM:
+	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+	case BPF_CGROUP_LSM_##NAME:
+	#include <linux/lsm_hook_defs.h>
+	#undef LSM_HOOK
 	/* systopia contrib end */
 		return cgroup_bpf_prog_query(attr, uattr);
 	case BPF_LIRC_MODE2:

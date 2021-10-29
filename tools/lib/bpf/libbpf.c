@@ -8616,8 +8616,10 @@ static const struct bpf_sec_def section_defs[] = {
 	BPF_EAPROG_SEC("sk_lookup/",		BPF_PROG_TYPE_SK_LOOKUP,
 						BPF_SK_LOOKUP),
 	/* systopia contrib start */
-	BPF_EAPROG_SEC("cgroup_lsm/",	BPF_PROG_TYPE_CGROUP_LSM,
-						BPF_CGROUP_LSM),
+	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+	BPF_EAPROG_SEC("cgroup_lsm/##NAME", BPF_PROG_TYPE_CGROUP_LSM, BPF_CGROUP_LSM_##NAME),
+	#include <linux/lsm_hook_defs.h>
+	#undef LSM_HOOK
 	/* systopia contrib end */
 };
 
