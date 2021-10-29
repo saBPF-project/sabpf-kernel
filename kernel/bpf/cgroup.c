@@ -1545,7 +1545,7 @@ out:
 	struct cgroup *cgrp;								\
 	int ret;											\
 														\
-	BPF_CGROUP_LSM_CTX_INIT(ctx,...);					\
+	BPF_CGROUP_LSM_CTX_INIT(ctx,__VA_ARGS__);					\
 	rcu_read_lock();									\
 	cgrp = task_dfl_cgroup(current);					\
 	ret = BPF_PROG_RUN_ARRAY(cgrp->bpf.effective[BPF_CGROUP_LSM_##NAME], &ctx, BPF_PROG_RUN); \
