@@ -2004,6 +2004,18 @@ bpf_prog_load_check_attach(enum bpf_prog_type prog_type,
 		default:
 			return -EINVAL;
 		}
+	/* systopia contrib start */
+	case BPF_PROG_TYPE_CGROUP_LSM:
+		switch (expected_attach_type) {
+		#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+		case BPF_CGROUP_LSM_##NAME:
+		#include <linux/lsm_hook_defs.h>
+		#undef LSM_HOOK
+			return 0;
+		default:
+			return -EINVAL;
+		}
+	/* systopia contrib end */
 	case BPF_PROG_TYPE_SK_LOOKUP:
 		if (expected_attach_type == BPF_SK_LOOKUP)
 			return 0;
@@ -2036,6 +2048,9 @@ static bool is_net_admin_prog_type(enum bpf_prog_type prog_type)
 	case BPF_PROG_TYPE_CGROUP_SOCK_ADDR:
 	case BPF_PROG_TYPE_CGROUP_SOCKOPT:
 	case BPF_PROG_TYPE_CGROUP_SYSCTL:
+	/* systopia contrib start */
+	case BPF_PROG_TYPE_CGROUP_LSM:
+	/* systopia contrib end */
 	case BPF_PROG_TYPE_SOCK_OPS:
 	case BPF_PROG_TYPE_EXT: /* extends any prog */
 		return true;
@@ -2894,6 +2909,9 @@ static int bpf_prog_attach_check_attach_type(const struct bpf_prog *prog,
 	case BPF_PROG_TYPE_CGROUP_SOCK_ADDR:
 	case BPF_PROG_TYPE_CGROUP_SOCKOPT:
 	case BPF_PROG_TYPE_SK_LOOKUP:
+	/* systopia contrib start */
+	case BPF_PROG_TYPE_CGROUP_LSM:
+	/* systopia contrib end */
 		return attach_type == prog->expected_attach_type ? 0 : -EINVAL;
 	case BPF_PROG_TYPE_CGROUP_SKB:
 		if (!capable(CAP_NET_ADMIN))
@@ -2958,6 +2976,13 @@ attach_type_to_prog_type(enum bpf_attach_type attach_type)
 		return BPF_PROG_TYPE_SK_LOOKUP;
 	case BPF_XDP:
 		return BPF_PROG_TYPE_XDP;
+	/* systopia contrib start */
+	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+	case BPF_CGROUP_LSM_##NAME:
+	#include <linux/lsm_hook_defs.h>
+	#undef LSM_HOOK
+		return BPF_PROG_TYPE_CGROUP_LSM;
+	/* systopia contrib end */
 	default:
 		return BPF_PROG_TYPE_UNSPEC;
 	}
@@ -3011,6 +3036,9 @@ static int bpf_prog_attach(const union bpf_attr *attr)
 	case BPF_PROG_TYPE_CGROUP_SOCKOPT:
 	case BPF_PROG_TYPE_CGROUP_SYSCTL:
 	case BPF_PROG_TYPE_SOCK_OPS:
+	/* systopia contrib start */
+	case BPF_PROG_TYPE_CGROUP_LSM:
+	/* systopia contrib end */
 		ret = cgroup_bpf_prog_attach(attr, ptype, prog);
 		break;
 	default:
@@ -3048,6 +3076,9 @@ static int bpf_prog_detach(const union bpf_attr *attr)
 	case BPF_PROG_TYPE_CGROUP_SOCKOPT:
 	case BPF_PROG_TYPE_CGROUP_SYSCTL:
 	case BPF_PROG_TYPE_SOCK_OPS:
+	/* systopia contrib start */
+	case BPF_PROG_TYPE_CGROUP_LSM:
+	/* systopia contrib end */
 		return cgroup_bpf_prog_detach(attr, ptype);
 	default:
 		return -EINVAL;
@@ -3090,6 +3121,12 @@ static int bpf_prog_query(const union bpf_attr *attr,
 	case BPF_CGROUP_SYSCTL:
 	case BPF_CGROUP_GETSOCKOPT:
 	case BPF_CGROUP_SETSOCKOPT:
+	/* systopia contrib start */
+	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+	case BPF_CGROUP_LSM_##NAME:
+	#include <linux/lsm_hook_defs.h>
+	#undef LSM_HOOK
+	/* systopia contrib end */
 		return cgroup_bpf_prog_query(attr, uattr);
 	case BPF_LIRC_MODE2:
 		return lirc_prog_query(attr, uattr);
@@ -4052,6 +4089,9 @@ static int link_create(union bpf_attr *attr)
 	case BPF_PROG_TYPE_CGROUP_DEVICE:
 	case BPF_PROG_TYPE_CGROUP_SYSCTL:
 	case BPF_PROG_TYPE_CGROUP_SOCKOPT:
+	/* systopia contrib start */
+	case BPF_PROG_TYPE_CGROUP_LSM:
+	/* systopia contrib end */
 		ret = cgroup_bpf_link_attach(attr, prog);
 		break;
 	case BPF_PROG_TYPE_TRACING:

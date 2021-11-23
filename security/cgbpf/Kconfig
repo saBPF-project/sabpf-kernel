@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+config SECURITY_CGBPF
+	bool "cgroup LSM-BPF support"
+	depends on SECURITY
+	default y
+	help
+	  This select cgroup LSM-BPF support.
+
+	  If you are unsure how to answer this question, answer N.
