@@ -6,22 +6,26 @@
 
 #include <linux/lsm_hooks.h>
 
-static int cgbpf_file_permission(struct file *file, int mask)
-{
-	return 0;
+/* For every LSM hook that allows attachment of BPF programs, declare a
+ * function where a BPF program can be attached, and call the cgroup handler.
+ */
+#define LSM_HOOK(RET, DEFAULT, NAME, ...)	\
+noinline RET cgbpf_##NAME(__VA_ARGS__)	\
+{						\
+	return DEFAULT;				\
 }
 
-static int cgbpf_file_open(struct file *file)
-{
-	return 0;
-}
+#include <linux/lsm_hook_defs.h>
+#undef LSM_HOOK
 
 /*!
  * @brief Add provenance hooks to security_hook_list.
  */
 static struct security_hook_list cgbpf_hooks[] __lsm_ro_after_init = {
-	LSM_HOOK_INIT(file_permission,          cgbpf_file_permission),
-	LSM_HOOK_INIT(file_open,                cgbpf_file_open),
+	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
+	LSM_HOOK_INIT(NAME, cgbpf_##NAME),
+	#include <linux/lsm_hook_defs.h>
+	#undef LSM_HOOK
 };
 
 static int __init cgbpf_init(void)
